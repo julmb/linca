@@ -19,7 +19,7 @@ openDevice =
 	do
 		newContext <- c'ftdi_new
 		if newContext == nullPtr
-			then error "Linca.FtdiUsart openDevice: cound not initialize new ftdi context"
+			then error "Linca.FtdiUsart.openDevice: cound not initialize new ftdi context"
 			else
 				do
 					let device = Device { context = newContext }
@@ -28,7 +28,7 @@ openDevice =
 						then
 							do
 								errorString <- getErrorString (context device)
-								error ("Linca.FtdiUsart openDevice: could not open USB device, error code: " ++ show result ++ ", error message: " ++ errorString)
+								error ("Linca.FtdiUsart.openDevice: could not open USB device, error code: " ++ show result ++ ", error message: " ++ errorString)
 						else return device
 
 closeDevice :: Device -> IO ()
@@ -39,7 +39,7 @@ closeDevice device =
 			then
 				do
 					errorString <- getErrorString (context device)
-					error ("Linca.FtdiUsart closeDevice: could not close USB device, error code: " ++ show result ++ ", error message: " ++ errorString)
+					error ("Linca.FtdiUsart.closeDevice: could not close USB device, error code: " ++ show result ++ ", error message: " ++ errorString)
 			else c'ftdi_free (context device)
 
 setBaudrate :: Device -> Integer -> IO ()
@@ -50,7 +50,7 @@ setBaudrate device baudrate =
 			then
 				do
 					errorString <- getErrorString (context device)
-					error ("Linca.FtdiUsart setBaudrate: could not set baudrate, error code: " ++ show result ++ ", error message: " ++ errorString)
+					error ("Linca.FtdiUsart.setBaudrate: could not set baudrate, error code: " ++ show result ++ ", error message: " ++ errorString)
 			else return ()
 
 sendData :: Device -> BS.ByteString -> IO ()
@@ -63,5 +63,5 @@ sendData device byteString =
 			then
 				do
 					errorString <- getErrorString (context device)
-					error ("Linca.FtdiUsart sendData: could not send data, error code: " ++ show result ++ ", error message: " ++ errorString)
+					error ("Linca.FtdiUsart.sendData: could not send data, error code: " ++ show result ++ ", error message: " ++ errorString)
 			else return ()
