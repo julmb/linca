@@ -47,6 +47,6 @@ cabal-version:       >= 1.8
 
 library
   hs-source-dirs:      source
-  exposed-modules:     Linca.List
+  exposed-modules:     Linca.List Linca.Timing
   -- other-modules:       
-  build-depends:       base == 4.5.*
+  build-depends:       base == 4.5.*, unbounded-delays >= 0.1.0.5, criterion >= 0.8
