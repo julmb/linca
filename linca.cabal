@@ -47,7 +47,7 @@ cabal-version:       >= 1.8
 
 library
   hs-source-dirs:      source
-  extensions:          FlexibleContexts RankNTypes
-  exposed-modules:     Linca.List Linca.Lens Linca.Timing Linca.Application Linca.FtdiUsart
+  extensions:          FlexibleContexts FlexibleInstances RankNTypes
+  exposed-modules:     Linca.List Linca.Lens Linca.Colour Linca.Timing Linca.Application Linca.FtdiUsart
   -- other-modules:       
-  build-depends:       base >= 4.5, lens >= 3.9, mtl >= 2.1, unbounded-delays >= 0.1, criterion >= 0.8, bindings-libftdi >= 0.2, bytestring >= 0.9
+  build-depends:       base >= 4.5, lens >= 3.9, mtl >= 2.1, colour >= 2.3, random >= 1.0, unbounded-delays >= 0.1, criterion >= 0.8, bindings-libftdi >= 0.2, bytestring >= 0.9
