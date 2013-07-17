@@ -1,6 +1,7 @@
 module Linca.Application where
 
 import Control.Monad.State
+
 import Linca.Timing
 
 data Application state display = Application

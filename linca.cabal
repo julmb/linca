@@ -51,6 +51,7 @@ library
   exposed-modules:
     Linca.Application
     Linca.Color
+    Linca.Color.Colors
     Linca.FtdiUsart
     Linca.Items
     Linca.Lens
@@ -58,4 +59,8 @@ library
     Linca.Range
     Linca.Scalars
     Linca.Timing
+  other-modules:
+    Linca.Color.Color
+    Linca.Color.AlphaColor
+    Linca.Color.Binary
   build-depends:       base >= 4.5, mtl >= 2.1, lens >= 3.9, bytestring >= 0.9, random >= 1.0, unbounded-delays >= 0.1, criterion >= 0.8, bindings-libftdi >= 0.2

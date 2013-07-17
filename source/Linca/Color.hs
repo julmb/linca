@@ -1,100 +1,11 @@
-module Linca.Color (rgb, hsv, red, green, blue, hue, saturation, value) where
+module Linca.Color
+(
+	module Linca.Color.Color,
+	module Linca.Color.AlphaColor,
+	module Linca.Color.Binary
+)
+where
 
-import Linca.Items
-import Linca.Scalars
-
-data Color = RGB Double Double Double | HSV Double Double Double deriving (Eq, Show, Read)
-
-rgb :: Double -> Double -> Double -> Color
-rgb red green blue
-	| red   < 0 || red   > 1 = error "Linca.Color.rgb: parameter red was outside of the allowed range"
-	| green < 0 || green > 1 = error "Linca.Color.rgb: parameter green was outside of the allowed range"
-	| blue  < 0 || blue  > 1 = error "Linca.Color.rgb: parameter blue was outside of the allowed range"
-	| otherwise = RGB red green blue
-
-hsv :: Double -> Double -> Double -> Color
-hsv hue saturation value
-	| hue        < 0 || hue        >= 6 = error "Linca.Color.hsv: parameter hue was outside of the allowed range"
-	| saturation < 0 || saturation >  1 = error "Linca.Color.hsv: parameter saturation was outside of the allowed range"
-	| value      < 0 || value      >  1 = error "Linca.Color.hsv: parameter value was outside of the allowed range"
-	| otherwise = HSV hue saturation value
-
-toRGB :: Color -> Color
-toRGB (RGB red green blue) = RGB red green blue
-toRGB (HSV hue saturation value)
-	| hueIndex == 0 = RGB top rising bottom
-	| hueIndex == 1 = RGB falling top bottom
-	| hueIndex == 2 = RGB bottom top rising
-	| hueIndex == 3 = RGB bottom falling top
-	| hueIndex == 4 = RGB rising bottom top
-	| hueIndex == 5 = RGB top bottom falling
-	where
-		(hueIndex, hueFraction) = properFraction hue
-		top = value
-		bottom = unitReverse saturation * value
-		rising = unitReverse (unitReverse hueFraction * saturation) * value
-		falling = unitReverse (unitForward hueFraction * saturation) * value
-
-toHSV :: Color -> Color
-toHSV (RGB red green blue)
-	| chroma == 0 = HSV 0 0 value
-	| otherwise   = HSV hue saturation value
-	where
-		chroma = value - minimum [red, green, blue]
-		hueRaw
-			| value == red   = (green - blue) / chroma + 0
-			| value == green = (blue - red)   / chroma + 2
-			| value == blue  = (red - green)  / chroma + 4
-		hue = normalizeCircular 6 hueRaw
-		saturation = chroma / value
-		value = maximum [red, green, blue]
-toHSV (HSV hue saturation value) = HSV hue saturation value
-
-red :: Color -> Double
-red (RGB r g b) = r
-red (HSV h s v) = red (toRGB (HSV h s v))
-
-green :: Color -> Double
-green (RGB r g b) = g
-green (HSV h s v) = green (toRGB (HSV h s v))
-
-blue :: Color -> Double
-blue (RGB r g b) = b
-blue (HSV h s v) = blue (toRGB (HSV h s v))
-
-hue :: Color -> Double
-hue (RGB r g b) = hue (toHSV (RGB r g b))
-hue (HSV h s v) = h
-
-saturation :: Color -> Double
-saturation (RGB r g b) = saturation (toHSV (RGB r g b))
-saturation (HSV h s v) = s
-
-value :: Color -> Double
-value (RGB r g b) = value (toHSV (RGB r g b))
-value (HSV h s v) = v
-
-
---import Control.Monad.State
---import System.Random
-
-{-
-pureColour :: AlphaColour Double -> Colour Double
-pureColour alphaColour | alphaChannel alphaColour == 0 = error "transparent has no pure colour"
-pureColour alphaColour = darken (recip (alphaChannel alphaColour)) (alphaColour `over` black)
-
-instance Random (Colour Double) where
-	randomR (minimum, maximum) = runState $ do
-		randomHue <- state (randomR (hue (toSRGB minimum), hue (toSRGB maximum)))
-		randomSaturation <- state (randomR (saturation (toSRGB minimum), saturation (toSRGB maximum)))
-		randomValue <- state (randomR (value (toSRGB minimum), value (toSRGB maximum)))
-		return (uncurryRGB sRGB (hsv randomHue randomSaturation randomValue))
-	random = randomR (uncurryRGB sRGB (hsv 0 1 1), uncurryRGB sRGB (hsv 359 1 1))
-
-instance Random (AlphaColour Double) where
-	randomR (minimum, maximum) = runState $ do
-		randomAlpha <- state (randomR (alphaChannel minimum, alphaChannel maximum))
-		randomColour <- state (randomR (minimum `over` black, maximum `over` black))
-		return (withOpacity randomColour randomAlpha)
-	random = randomR (withOpacity (uncurryRGB sRGB (hsv 0 1 1)) 0, withOpacity (uncurryRGB sRGB (hsv 359 1 1)) 1)
--}
+import Linca.Color.Color
+import Linca.Color.AlphaColor
+import Linca.Color.Binary
