@@ -1,4 +1,4 @@
-module Linca.Items where
+module Linca.Items (equal) where
 
 equal :: Eq a => a -> a -> a
 equal a b

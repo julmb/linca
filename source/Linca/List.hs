@@ -1,4 +1,4 @@
-module Linca.List where
+module Linca.List (replaceAt, rotateLeft, rotateRight, indices) where
 
 import Data.List
 

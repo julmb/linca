@@ -1,10 +1,10 @@
-module Linca.Timing where
+module Linca.Timing (Linca.Timing.time, sleep) where
 
 import Criterion.Measurement
 import Control.Concurrent.Thread.Delay
 
-getTime :: IO Double
-getTime = Criterion.Measurement.getTime
+time :: IO Double
+time = Criterion.Measurement.getTime
 
-delay :: Double -> IO ()
-delay duration = Control.Concurrent.Thread.Delay.delay (truncate (duration * 1000000))
+sleep :: Double -> IO ()
+sleep duration = Control.Concurrent.Thread.Delay.delay (truncate (duration * 1000000))

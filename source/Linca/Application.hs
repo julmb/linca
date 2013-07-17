@@ -1,4 +1,4 @@
-module Linca.Application where
+module Linca.Application (Application (Application), frameDuration, initialState, updateState, getDisplay, runApplication) where
 
 import Control.Monad.State
 
@@ -14,11 +14,11 @@ data Application state display = Application
 
 loopApplication :: Application state display -> (display -> IO ()) -> Double -> StateT state IO ()
 loopApplication application present lastTime = do
-	currentTime <- lift getTime
+	currentTime <- lift time
 	let passedDuration = currentTime - lastTime
 	let waitDuration = frameDuration application - passedDuration
-	lift (delay waitDuration)
-	currentTime <- lift getTime
+	lift (sleep waitDuration)
+	currentTime <- lift time
 
 	modify (updateState application (currentTime - lastTime))
 	display <- gets (getDisplay application)
@@ -28,6 +28,6 @@ loopApplication application present lastTime = do
 
 runApplication :: Application state display -> (display -> IO ()) -> IO ()
 runApplication application present = do
-	initialTime <- getTime
+	initialTime <- time
 	execStateT (loopApplication application present initialTime) (initialState application)
 	return ()

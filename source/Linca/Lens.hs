@@ -1,4 +1,4 @@
-module Linca.Lens where
+module Linca.Lens ((...=), genericIx) where
 
 import Control.Lens
 import Control.Monad.State

@@ -1,4 +1,4 @@
-module Linca.Range where
+module Linca.Range (Range (Range), start, end, contains) where
 
 data Range value = Range { start :: value, end :: value } deriving (Eq, Show, Read)
 

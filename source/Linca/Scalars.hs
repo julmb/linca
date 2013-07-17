@@ -1,4 +1,4 @@
-module Linca.Scalars where
+module Linca.Scalars (unitForward, unitReverse, fraction, normalizeCircular) where
 
 unitForward :: Num a => a -> a
 unitForward value = value
