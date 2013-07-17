@@ -30,6 +30,7 @@ toRGB (HSV hue saturation value)
 	| hueIndex == 3 = RGB bottom falling top
 	| hueIndex == 4 = RGB rising bottom top
 	| hueIndex == 5 = RGB top bottom falling
+    | otherwise = undefined
 	where
 		(hueIndex, hueFraction) = properFraction hue
 		top = value
@@ -47,34 +48,35 @@ toHSV (RGB red green blue)
 			| value == red   = (green - blue) / chroma + 0
 			| value == green = (blue - red)   / chroma + 2
 			| value == blue  = (red - green)  / chroma + 4
+			| otherwise = undefined
 		hue = normalizeCircular 6 hueRaw
 		saturation = chroma / value
 		value = maximum [red, green, blue]
 toHSV (HSV hue saturation value) = HSV hue saturation value
 
 red :: Color -> Double
-red (RGB r g b) = r
+red (RGB r _ _) = r
 red (HSV h s v) = red (toRGB (HSV h s v))
 
 green :: Color -> Double
-green (RGB r g b) = g
+green (RGB _ g _) = g
 green (HSV h s v) = green (toRGB (HSV h s v))
 
 blue :: Color -> Double
-blue (RGB r g b) = b
+blue (RGB _ _ b) = b
 blue (HSV h s v) = blue (toRGB (HSV h s v))
 
 hue :: Color -> Double
 hue (RGB r g b) = hue (toHSV (RGB r g b))
-hue (HSV h s v) = h
+hue (HSV h _ _) = h
 
 saturation :: Color -> Double
 saturation (RGB r g b) = saturation (toHSV (RGB r g b))
-saturation (HSV h s v) = s
+saturation (HSV _ s _) = s
 
 value :: Color -> Double
 value (RGB r g b) = value (toHSV (RGB r g b))
-value (HSV h s v) = v
+value (HSV _ _ v) = v
 
 instance Random Color where
 	randomR (minimum, maximum) = runState $ do

@@ -3,7 +3,6 @@ module Linca.FtdiUsart where
 import Control.Monad
 import Foreign.Ptr
 import Foreign.C
-import Foreign.C.String
 import Foreign.Marshal.Array
 import qualified Data.ByteString as BS
 import Bindings.Libftdi

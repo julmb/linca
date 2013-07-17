@@ -46,6 +46,7 @@ cabal-version:       >= 1.8
 
 
 library
+  ghc-options:         -W
   hs-source-dirs:      source
   extensions:          FlexibleContexts FlexibleInstances RankNTypes
   exposed-modules:
