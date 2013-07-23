@@ -1,4 +1,7 @@
-module Linca.Scalars (unitForward, unitReverse, fraction, normalizeCircular) where
+module Linca.Scalars (unitForward, unitReverse, fraction, normalizeCircular, intermediateValues, intermediateValuesSymmetric) where
+
+import Linca.List
+import Linca.Range as Range
 
 unitForward :: Num a => a -> a
 unitForward value = value
@@ -16,3 +19,17 @@ normalizeCircular length value
 	where
 		fractionalPeriods = fraction (value / length)
 		periods = if fractionalPeriods < 0 then fractionalPeriods + 1 else fractionalPeriods
+
+intermediateValues :: RealFrac a => Range a -> Integer -> [a]
+intermediateValues range count = do
+	index <- indices count
+	let position = fromIntegral index / fromIntegral count
+	return ((start range) + position * (Range.length range))
+
+intermediateValuesSymmetric :: RealFrac a => Range a -> Integer -> [a]
+intermediateValuesSymmetric range count
+	| count == 1 = [midpoint range]
+	| otherwise = do
+		index <- indices count
+		let position = fromIntegral index / (fromIntegral count - 1)
+		return ((start range) + position * (Range.length range))
