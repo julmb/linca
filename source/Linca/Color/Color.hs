@@ -21,6 +21,30 @@ hsv hue saturation value
 	| value      < 0 || value      >  1 = error "Linca.Color.Color.hsv: parameter value was outside of the allowed range"
 	| otherwise = HSV hue saturation value
 
+red :: Color -> Double
+red (RGB r _ _) = r
+red (HSV h s v) = red (toRGB (HSV h s v))
+
+green :: Color -> Double
+green (RGB _ g _) = g
+green (HSV h s v) = green (toRGB (HSV h s v))
+
+blue :: Color -> Double
+blue (RGB _ _ b) = b
+blue (HSV h s v) = blue (toRGB (HSV h s v))
+
+hue :: Color -> Double
+hue (RGB r g b) = hue (toHSV (RGB r g b))
+hue (HSV h _ _) = h
+
+saturation :: Color -> Double
+saturation (RGB r g b) = saturation (toHSV (RGB r g b))
+saturation (HSV _ s _) = s
+
+value :: Color -> Double
+value (RGB r g b) = value (toHSV (RGB r g b))
+value (HSV _ _ v) = v
+
 toRGB :: Color -> Color
 toRGB (RGB red green blue) = RGB red green blue
 toRGB (HSV hue saturation value)
@@ -53,30 +77,6 @@ toHSV (RGB red green blue)
 		saturation = chroma / value
 		value = maximum [red, green, blue]
 toHSV (HSV hue saturation value) = HSV hue saturation value
-
-red :: Color -> Double
-red (RGB r _ _) = r
-red (HSV h s v) = red (toRGB (HSV h s v))
-
-green :: Color -> Double
-green (RGB _ g _) = g
-green (HSV h s v) = green (toRGB (HSV h s v))
-
-blue :: Color -> Double
-blue (RGB _ _ b) = b
-blue (HSV h s v) = blue (toRGB (HSV h s v))
-
-hue :: Color -> Double
-hue (RGB r g b) = hue (toHSV (RGB r g b))
-hue (HSV h _ _) = h
-
-saturation :: Color -> Double
-saturation (RGB r g b) = saturation (toHSV (RGB r g b))
-saturation (HSV _ s _) = s
-
-value :: Color -> Double
-value (RGB r g b) = value (toHSV (RGB r g b))
-value (HSV _ _ v) = v
 
 instance Random Color where
 	randomR (minimum, maximum) = runState $ do

@@ -1,20 +1,23 @@
-module Linca.Color.AlphaColor (AlphaColor, alphaColor, opaque, alpha) where
+module Linca.Color.AlphaColor (AlphaColor, alphaColor, base, alpha, opaque) where
 
 import Control.Monad.State
 import System.Random
 
 import Linca.Color.Color
 
-data AlphaColor = AlphaColor { opaque :: Color, alpha :: Double } deriving (Eq, Show, Read)
+data AlphaColor = AlphaColor { base :: Color, alpha :: Double } deriving (Eq, Show, Read)
 
 alphaColor :: Color -> Double -> AlphaColor
-alphaColor opaque alpha
+alphaColor base alpha
 	| alpha < 0 || alpha > 1 = error "Linca.Color.AlphaColor.alphaColor: parameter alpha was outside of the allowed range"
-	| otherwise = AlphaColor opaque alpha
+	| otherwise = AlphaColor base alpha
+
+opaque :: Color -> AlphaColor
+opaque color = alphaColor color 1
 
 instance Random AlphaColor where
 	randomR (minimum, maximum) = runState $ do
-		randomOpaque <- state (randomR (opaque minimum, opaque maximum))
+		randomBase <- state (randomR (base minimum, base maximum))
 		randomAlpha <- state (randomR (alpha minimum, alpha maximum))
-		return (alphaColor randomOpaque randomAlpha)
+		return (alphaColor randomBase randomAlpha)
 	random = randomR (alphaColor (hsv 0 1 1) 1, alphaColor (hsv 5.99999 1 1) 1)

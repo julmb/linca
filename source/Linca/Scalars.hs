@@ -7,7 +7,7 @@ unitReverse :: Num a => a -> a
 unitReverse value = 1 - value
 
 fraction :: RealFrac a => a -> a
-fraction value = snd (properFraction value) 
+fraction = snd . properFraction
 
 normalizeCircular :: RealFrac a => a -> a -> a
 normalizeCircular length value
