@@ -9,16 +9,16 @@ data Color = RGB Double Double Double | HSV Double Double Double deriving (Eq, S
 
 rgb :: Double -> Double -> Double -> Color
 rgb red green blue
-	| red   < 0 || red   > 1 = error "Linca.Color.rgb: parameter red was outside of the allowed range"
-	| green < 0 || green > 1 = error "Linca.Color.rgb: parameter green was outside of the allowed range"
-	| blue  < 0 || blue  > 1 = error "Linca.Color.rgb: parameter blue was outside of the allowed range"
+	| red   < 0 || red   > 1 = error "Linca.Color.Color.rgb: parameter red was outside of the allowed range"
+	| green < 0 || green > 1 = error "Linca.Color.Color.rgb: parameter green was outside of the allowed range"
+	| blue  < 0 || blue  > 1 = error "Linca.Color.Color.rgb: parameter blue was outside of the allowed range"
 	| otherwise = RGB red green blue
 
 hsv :: Double -> Double -> Double -> Color
 hsv hue saturation value
-	| hue        < 0 || hue        >= 6 = error "Linca.Color.hsv: parameter hue was outside of the allowed range"
-	| saturation < 0 || saturation >  1 = error "Linca.Color.hsv: parameter saturation was outside of the allowed range"
-	| value      < 0 || value      >  1 = error "Linca.Color.hsv: parameter value was outside of the allowed range"
+	| hue        < 0 || hue        >= 6 = error "Linca.Color.Color.hsv: parameter hue was outside of the allowed range"
+	| saturation < 0 || saturation >  1 = error "Linca.Color.Color.hsv: parameter saturation was outside of the allowed range"
+	| value      < 0 || value      >  1 = error "Linca.Color.Color.hsv: parameter value was outside of the allowed range"
 	| otherwise = HSV hue saturation value
 
 toRGB :: Color -> Color

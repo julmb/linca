@@ -8,7 +8,9 @@ import Linca.Color.Color
 data AlphaColor = AlphaColor { opaque :: Color, alpha :: Double } deriving (Eq, Show, Read)
 
 alphaColor :: Color -> Double -> AlphaColor
-alphaColor = AlphaColor
+alphaColor opaque alpha
+	| alpha < 0 || alpha > 1 = error "Linca.Color.AlphaColor.alphaColor: parameter alpha was outside of the allowed range"
+	| otherwise = AlphaColor opaque alpha
 
 instance Random AlphaColor where
 	randomR (minimum, maximum) = runState $ do
