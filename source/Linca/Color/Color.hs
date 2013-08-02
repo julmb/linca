@@ -3,7 +3,7 @@ module Linca.Color.Color (Color, rgb, hsv, red, green, blue, hue, saturation, va
 import Control.Monad.State
 import System.Random
 
-import Linca.Scalars
+import Linca.Scalar
 
 data Color = RGB Double Double Double | HSV Double Double Double deriving (Eq, Show, Read)
 

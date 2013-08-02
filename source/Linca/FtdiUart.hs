@@ -1,4 +1,4 @@
-module Linca.FtdiUsart (Device, openDevice, closeDevice, setBaudrate, sendData) where
+module Linca.FtdiUart (Device, openDevice, closeDevice, setBaudrate, sendData) where
 
 import Control.Monad
 import Foreign.Ptr
@@ -18,12 +18,12 @@ checkResult :: Device -> String -> CInt -> IO ()
 checkResult device action result =
 	when (result < 0) $ do
 		errorString <- getErrorString device
-		error ("Linca.FtdiUsart." ++ action ++ ": " ++ errorString ++ ", error code: " ++ show result )
+		error ("Linca.FtdiUart." ++ action ++ ": " ++ errorString ++ ", error code: " ++ show result )
 
 openDevice :: IO Device
 openDevice = do
 	newContext <- c'ftdi_new
-	when (newContext == nullPtr) $ error "Linca.FtdiUsart.openDevice: cound not initialize new ftdi context"
+	when (newContext == nullPtr) $ error "Linca.FtdiUart.openDevice: cound not initialize new ftdi context"
 	let device = Device { context = newContext }
 	result <- c'ftdi_usb_open (context device) 0x0403 0x6001
 	checkResult device "openDevice" result

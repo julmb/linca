@@ -1,4 +1,4 @@
-module Linca.Scalars (unitForward, unitReverse, fraction, normalizeCircular, intermediateValues, intermediateValuesSymmetric) where
+module Linca.Scalar (unitForward, unitReverse, fraction, normalizeCircular, intermediateValues, intermediateValuesSymmetric) where
 
 import Linca.List
 import Linca.Range as Range
