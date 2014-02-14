@@ -1,4 +1,4 @@
-module Linca.Lens ((...=), genericIx) where
+module Linca.Lens ((...=)) where
 
 import Control.Lens
 import Control.Monad.State
@@ -11,6 +11,3 @@ property ...= update = do
 	let (value, newState) = runState update oldState
 	property .= newState
 	return value
-
-genericIx :: (Integral i, Num (Index m), Ixed f m) => i -> IndexedLensLike' (Index m) f m (IxValue m)
-genericIx = ix . fromIntegral
