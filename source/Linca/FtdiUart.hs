@@ -18,7 +18,7 @@ checkResult :: Device -> String -> CInt -> IO ()
 checkResult device action result =
 	when (result < 0) $ do
 		errorString <- getErrorString device
-		error ("Linca.FtdiUart." ++ action ++ ": " ++ errorString ++ ", error code: " ++ show result )
+		error ("Linca.FtdiUart." ++ action ++ ": " ++ errorString ++ ", error code: " ++ show result)
 
 openDevice :: IO Device
 openDevice = do
