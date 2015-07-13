@@ -29,5 +29,4 @@ loopApplication application present lastTime = do
 runApplication :: Application state display -> (display -> IO ()) -> IO ()
 runApplication application present = do
 	initialTime <- time
-	execStateT (loopApplication application present initialTime) (initialState application)
-	return ()
+	evalStateT (loopApplication application present initialTime) (initialState application)

@@ -24,7 +24,7 @@ intermediateValues :: RealFrac a => Range a -> Integer -> [a]
 intermediateValues range count = do
 	index <- indices count
 	let position = fromIntegral index / fromIntegral count
-	return ((start range) + position * (Range.length range))
+	return (start range + position * Range.length range)
 
 intermediateValuesSymmetric :: RealFrac a => Range a -> Integer -> [a]
 intermediateValuesSymmetric range count
@@ -32,4 +32,4 @@ intermediateValuesSymmetric range count
 	| otherwise = do
 		index <- indices count
 		let position = fromIntegral index / (fromIntegral count - 1)
-		return ((start range) + position * (Range.length range))
+		return (start range + position * Range.length range)
