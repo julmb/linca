@@ -10,7 +10,7 @@ name:                linca
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.1.0.0
+version:             0.2.0.0
 
 -- A short (one-line) description of the package.
 synopsis:            general-purpose library for haskell
@@ -32,7 +32,7 @@ author:              Julian Brunner
 
 -- An email address to which users can send suggestions, bug reports, and 
 -- patches.
-maintainer:          JulianBrunner@gmail.com
+maintainer:          julianbrunner@gmail.com
 
 -- A copyright notice.
 -- copyright:           
