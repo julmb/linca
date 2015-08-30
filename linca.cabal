@@ -53,7 +53,6 @@ library
     Linca.Application
     Linca.Color
     Linca.Color.Colors
-    Linca.FtdiUart
     Linca.Items
     Linca.Lens
     Linca.List
@@ -65,4 +64,4 @@ library
     Linca.Color.Color
     Linca.Color.AlphaColor
     Linca.Color.Binary
-  build-depends:       base, mtl, lens, bytestring, random, unbounded-delays, criterion, bindings-libftdi
+  build-depends:       base, mtl, lens, bytestring, random, unbounded-delays, criterion
