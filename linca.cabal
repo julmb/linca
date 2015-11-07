@@ -51,11 +51,12 @@ library
   extensions:          MultiParamTypeClasses FunctionalDependencies FlexibleContexts FlexibleInstances RankNTypes
   exposed-modules:
     Linca.Application
+    Linca.Basic
+    Linca.ByteString.Lazy
     Linca.Color
     Linca.Color.Colors
     Linca.Items
     Linca.Lens
-    Linca.List
     Linca.Range
     Linca.Scalar
     Linca.Vector

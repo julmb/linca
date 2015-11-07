@@ -1,6 +1,6 @@
 module Linca.Scalar (unitForward, unitReverse, fraction, normalizeCircular, intermediateValues, intermediateValuesSymmetric) where
 
-import Linca.List
+import Linca.Basic
 import Linca.Range as Range
 
 unitForward :: Num a => a -> a
