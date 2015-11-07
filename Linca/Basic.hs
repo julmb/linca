@@ -1,4 +1,4 @@
-module Linca.Basic (replaceAt, rotateLeft, rotateRight, indices, fold, crc16Word8) where
+module Linca.Basic (replaceAt, rotateLeft, rotateRight, indices, fold, crc16) where
 
 import Data.Bits
 import Data.List
@@ -29,7 +29,7 @@ indices count = [0 .. (count - 1)]
 fold :: Foldable t => (x -> a -> a) -> t x -> a -> a
 fold = flip . foldl . flip
 
-crc16Word8 :: Word8 -> Word16 -> Word16
-crc16Word8 byte = power step 8 . initial where
+crc16 :: Word8 -> Word16 -> Word16
+crc16 byte = power step 8 . initial where
 	initial value = fromIntegral byte `xor` value
 	step value = if testBit value 0 then shiftR value 1 `xor` 0xA001 else shiftR value 1
