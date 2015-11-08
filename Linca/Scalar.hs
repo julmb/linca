@@ -1,7 +1,4 @@
-module Linca.Scalar (unitForward, unitReverse, fraction, normalizeCircular, intermediateValues, intermediateValuesSymmetric) where
-
-import Linca.Basic
-import Linca.Range as Range
+module Linca.Scalar (unitForward, unitReverse, normalize, normalizeValue) where
 
 unitForward :: Num a => a -> a
 unitForward value = value
@@ -9,27 +6,11 @@ unitForward value = value
 unitReverse :: Num a => a -> a
 unitReverse value = 1 - value
 
-fraction :: RealFrac a => a -> a
-fraction = snd . properFraction
+normalize :: (Num value, Ord value, Num index) => value -> (index, value) -> (index, value)
+normalize length (index, value)
+	| value < 0       = normalize length (index - 1, value + length)
+	| value >= length = normalize length (index + 1, value - length)
+	| otherwise       = (index, value)
 
-normalizeCircular :: RealFrac a => a -> a -> a
-normalizeCircular length value
-	| length <= 0 = error "Linca.Scalars.normalizeCircular: parameter length was less than or equal to zero"
-	| otherwise   = periods * length
-	where
-		fractionalPeriods = fraction (value / length)
-		periods = if fractionalPeriods < 0 then fractionalPeriods + 1 else fractionalPeriods
-
-intermediateValues :: RealFrac a => Range a -> Integer -> [a]
-intermediateValues range count = do
-	index <- indices count
-	let position = fromIntegral index / fromIntegral count
-	return (start range + position * Range.length range)
-
-intermediateValuesSymmetric :: RealFrac a => Range a -> Integer -> [a]
-intermediateValuesSymmetric range count
-	| count == 1 = [midpoint range]
-	| otherwise = do
-		index <- indices count
-		let position = fromIntegral index / (fromIntegral count - 1)
-		return (start range + position * Range.length range)
+normalizeValue :: (Num value, Ord value) => value -> value -> value
+normalizeValue length value = snd (normalize length (0, value))

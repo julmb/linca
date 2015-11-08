@@ -1,14 +1,18 @@
-module Linca.Basic (replaceAt, rotateLeft, rotateRight, indices, fold, crc16) where
+module Linca.Basic (enum, power, replaceAt, rotateLeft, rotateRight, indices, fold, crc16) where
 
+import Numeric.Natural
 import Data.Bits
 import Data.List
 import Data.Word
 
-power :: (a -> a) -> Integer -> (a -> a)
+enum :: (Enum a, Bounded a) => [a]
+enum = [minBound .. maxBound]
+
+power :: (a -> a) -> Natural -> (a -> a)
 power _ 0 = id
 power f n = f . power f (n - 1)
 
-replaceAt :: Integer -> a -> [a] -> [a]
+replaceAt :: Natural -> a -> [a] -> [a]
 replaceAt index item list
 	| index < 0                      = error "Linca.List.replaceAt: negative index"
 	| index > genericLength list - 1 = error "Linca.List.replaceAt: index too large"
@@ -23,8 +27,8 @@ rotateLeft list = tail list ++ [head list]
 rotateRight :: [a] -> [a]
 rotateRight list = [last list] ++ init list
 
-indices :: Integer -> [Integer]
-indices count = [0 .. (count - 1)]
+indices :: Natural -> [Natural]
+indices count = [0 .. count - 1]
 
 fold :: Foldable t => (x -> a -> a) -> t x -> a -> a
 fold = flip . foldl . flip

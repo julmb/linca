@@ -73,7 +73,7 @@ toHSV (RGB red green blue)
 			| value == green = (blue - red)   / chroma + 2
 			| value == blue  = (red - green)  / chroma + 4
 			| otherwise = undefined
-		hue = normalizeCircular 6 hueRaw
+		hue = normalizeValue 6 hueRaw
 		saturation = chroma / value
 		value = maximum [red, green, blue]
 toHSV (HSV hue saturation value) = HSV hue saturation value
