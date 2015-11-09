@@ -20,7 +20,6 @@ library
     Linca.Color
     Linca.Color.Colors
     Linca.Items
-    Linca.Lens
     Linca.Range
     Linca.Scalar
     Linca.Vector
@@ -30,6 +29,6 @@ library
     Linca.Color.AlphaColor
     Linca.Color.Binary
   -- TODO: remove unused
-  build-depends:       base, mtl, lens, bytestring, random, unbounded-delays, criterion
+  build-depends:       base, mtl, bytestring, random, unbounded-delays, criterion
   ghc-options:         -Wall -fno-warn-tabs -fno-warn-type-defaults -fno-warn-name-shadowing
   default-language:    Haskell2010
