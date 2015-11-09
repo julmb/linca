@@ -2,7 +2,7 @@ module Linca.Range (Range, range, start, end, unit, contains, outside, rangeErro
 
 import Numeric.Natural
 import Text.Printf
-import Linca.Basic
+import Linca.List
 
 data Range value = Range { start :: value, end :: value } deriving (Eq, Show, Read)
 

@@ -1,4 +1,4 @@
-module Linca.ByteString.Lazy (fold) where
+module Linca.ByteString (fold) where
 
 import Data.Word
 import Data.ByteString.Lazy

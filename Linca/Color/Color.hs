@@ -1,8 +1,8 @@
 module Linca.Color.Color (Color, rgb, hsv, red, green, blue, hue, saturation, value) where
 
+import Numeric.Natural
 import Control.Monad.State
 import System.Random
-
 import Linca.Scalar
 
 data Color = RGB Double Double Double | HSV Double Double Double deriving (Eq, Show, Read)
@@ -56,7 +56,7 @@ toRGB (HSV hue saturation value)
 	| hueIndex == 5 = RGB top bottom falling
     | otherwise = undefined
 	where
-		(hueIndex, hueFraction) = properFraction hue
+		(hueIndex, hueFraction) = normalize 1 (0 :: Natural, hue)
 		top = value
 		bottom = unitReverse saturation * value
 		rising = unitReverse (unitReverse hueFraction * saturation) * value
@@ -73,7 +73,7 @@ toHSV (RGB red green blue)
 			| value == green = (blue - red)   / chroma + 2
 			| value == blue  = (red - green)  / chroma + 4
 			| otherwise = undefined
-		hue = normalizeValue 6 hueRaw
+		(_, hue) = normalize 6 (0 :: Integer, hueRaw)
 		saturation = chroma / value
 		value = maximum [red, green, blue]
 toHSV (HSV hue saturation value) = HSV hue saturation value

@@ -1,10 +1,6 @@
-module Linca.Color.Colors where
+module Linca.Color.Named where
 
-import Linca.Color.Color
-import Linca.Color.AlphaColor
-
-transparent :: AlphaColor
-transparent = alphaColor (hsv 0 0 0) 0
+import Linca.Color
 
 black :: Color
 black = hsv 0 0 0
@@ -29,3 +25,6 @@ blue = hsv 4 1 1
 
 magenta :: Color
 magenta = hsv 5 1 1
+
+transparent :: AlphaColor
+transparent = alphaColor (hsv 0 0 0) 0

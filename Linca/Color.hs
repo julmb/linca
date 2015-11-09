@@ -1,11 +1,11 @@
 module Linca.Color
 (
 	module Linca.Color.Color,
-	module Linca.Color.AlphaColor,
+	module Linca.Color.Alpha,
 	module Linca.Color.Binary
 )
 where
 
 import Linca.Color.Color
-import Linca.Color.AlphaColor
+import Linca.Color.Alpha
 import Linca.Color.Binary

@@ -1,8 +1,7 @@
-module Linca.Color.AlphaColor (AlphaColor, alphaColor, base, alpha, opaque) where
+module Linca.Color.Alpha (AlphaColor, alphaColor, base, alpha, opaque) where
 
 import Control.Monad.State
 import System.Random
-
 import Linca.Color.Color
 
 data AlphaColor = AlphaColor { base :: Color, alpha :: Double } deriving (Eq, Show, Read)

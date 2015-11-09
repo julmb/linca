@@ -1,10 +1,33 @@
-module Linca.Timing (Linca.Timing.time, sleep) where
+module Linca.Timing (delay, Application (Application), frameDuration, initialState, updateState, present, runApplication) where
 
-import Criterion.Measurement
-import Control.Concurrent.Thread.Delay
+import Data.Time
+import Control.Concurrent
+import Control.Monad.State
 
-time :: IO Double
-time = Criterion.Measurement.getTime
+delay :: NominalDiffTime -> IO ()
+delay duration = threadDelay (truncate (duration * 1000000))
 
-sleep :: Double -> IO ()
-sleep duration = Control.Concurrent.Thread.Delay.delay (truncate (duration * 1000000))
+data Application state =
+	Application
+	{
+		frameDuration :: NominalDiffTime,
+		initialState :: state,
+		updateState :: NominalDiffTime -> state -> state,
+		present :: state -> IO ()
+	}
+
+loopApplication :: Application state -> UTCTime -> StateT state IO ()
+loopApplication application lastTime = do
+	currentTime <- lift getCurrentTime
+	lift $ delay $ frameDuration application - diffUTCTime currentTime lastTime
+	currentTime <- lift getCurrentTime
+	state <- get
+	let newState = updateState application (diffUTCTime currentTime lastTime) state
+	lift $ present application newState
+	put newState
+	loopApplication application currentTime
+
+runApplication :: Application state -> IO ()
+runApplication application = do
+	initialTime <- getCurrentTime
+	evalStateT (loopApplication application initialTime) (initialState application)

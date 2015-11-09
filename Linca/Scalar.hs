@@ -1,4 +1,4 @@
-module Linca.Scalar (unitForward, unitReverse, normalize, normalizeValue) where
+module Linca.Scalar (unitForward, unitReverse, normalize) where
 
 unitForward :: Num a => a -> a
 unitForward value = value
@@ -11,6 +11,3 @@ normalize length (index, value)
 	| value < 0       = normalize length (index - 1, value + length)
 	| value >= length = normalize length (index + 1, value - length)
 	| otherwise       = (index, value)
-
-normalizeValue :: (Num value, Ord value) => value -> value -> value
-normalizeValue length value = snd (normalize length (0, value))
