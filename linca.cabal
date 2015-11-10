@@ -17,6 +17,7 @@ library
     Linca.Range
     Linca.List
     Linca.Monad
+    Linca.Random
     Linca.ByteString
     Linca.Cryptography
     Linca.Color

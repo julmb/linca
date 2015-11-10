@@ -1,47 +1,53 @@
-module Linca.Color.Color (Color, rgb, hsv, red, green, blue, hue, saturation, value) where
+module Linca.Color.Color (Color, hueRange, rgb, hsv, red, green, blue, hue, saturation, value) where
 
 import Numeric.Natural
 import Control.Monad.State
 import System.Random
 import Linca.Scalar
+import Linca.Range
+import Linca.Random
 
-data Color = RGB Double Double Double | HSV Double Double Double deriving (Eq, Show, Read)
+-- TODO: use Rational? update bitbucket TODOs
+data Color = RGB Rational Rational Rational | HSV Rational Rational Rational deriving (Eq, Show, Read)
 
-rgb :: Double -> Double -> Double -> Color
+hueRange :: Range Rational
+hueRange = range 0 6
+
+rgb :: Rational -> Rational -> Rational -> Color
 rgb red green blue
-	| red   < 0 || red   > 1 = error "Linca.Color.Color.rgb: parameter red was outside of the allowed range"
-	| green < 0 || green > 1 = error "Linca.Color.Color.rgb: parameter green was outside of the allowed range"
-	| blue  < 0 || blue  > 1 = error "Linca.Color.Color.rgb: parameter blue was outside of the allowed range"
+	| not $ contains' unitRange red   = rangeError "rgb" "red"   unitRange red
+	| not $ contains' unitRange green = rangeError "rgb" "green" unitRange green
+	| not $ contains' unitRange blue  = rangeError "rgb" "blue"  unitRange blue
 	| otherwise = RGB red green blue
 
-hsv :: Double -> Double -> Double -> Color
+hsv :: Rational -> Rational -> Rational -> Color
 hsv hue saturation value
-	| hue        < 0 || hue        >= 6 = error "Linca.Color.Color.hsv: parameter hue was outside of the allowed range"
-	| saturation < 0 || saturation >  1 = error "Linca.Color.Color.hsv: parameter saturation was outside of the allowed range"
-	| value      < 0 || value      >  1 = error "Linca.Color.Color.hsv: parameter value was outside of the allowed range"
+	| not $ contains  hueRange  hue        = rangeError "hsv" "hue"        hueRange  hue
+	| not $ contains' unitRange saturation = rangeError "hsv" "saturation" unitRange saturation
+	| not $ contains' unitRange value      = rangeError "hsv" "value"      unitRange value
 	| otherwise = HSV hue saturation value
 
-red :: Color -> Double
+red :: Color -> Rational
 red (RGB r _ _) = r
 red (HSV h s v) = red (toRGB (HSV h s v))
 
-green :: Color -> Double
+green :: Color -> Rational
 green (RGB _ g _) = g
 green (HSV h s v) = green (toRGB (HSV h s v))
 
-blue :: Color -> Double
+blue :: Color -> Rational
 blue (RGB _ _ b) = b
 blue (HSV h s v) = blue (toRGB (HSV h s v))
 
-hue :: Color -> Double
+hue :: Color -> Rational
 hue (RGB r g b) = hue (toHSV (RGB r g b))
 hue (HSV h _ _) = h
 
-saturation :: Color -> Double
+saturation :: Color -> Rational
 saturation (RGB r g b) = saturation (toHSV (RGB r g b))
 saturation (HSV _ s _) = s
 
-value :: Color -> Double
+value :: Color -> Rational
 value (RGB r g b) = value (toHSV (RGB r g b))
 value (HSV _ _ v) = v
 
@@ -78,10 +84,14 @@ toHSV (RGB red green blue)
 		value = maximum [red, green, blue]
 toHSV (HSV hue saturation value) = HSV hue saturation value
 
+-- TODO: colors are not single dimensional, not suitable for min/max random specification
+-- TODO: maybe we should drop the random library and roll our own?
 instance Random Color where
+	random = runState $ do
+		hue <- state $ randomR' (0, 6)
+		return $ hsv hue 1 1
 	randomR (minimum, maximum) = runState $ do
-		randomHue <- state (randomR (hue minimum, hue maximum))
-		randomSaturation <- state (randomR (saturation minimum, saturation maximum))
-		randomValue <- state (randomR (value minimum, value maximum))
-		return (hsv randomHue randomSaturation randomValue)
-	random = randomR (hsv 0 1 1, hsv 5.99999 1 1)
+		hue <- state $ randomR' (hue minimum, hue maximum)
+		saturation <- state $ randomR (saturation minimum, saturation maximum)
+		value <- state $ randomR (value minimum, value maximum)
+		return $ hsv hue saturation value
