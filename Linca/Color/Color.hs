@@ -60,7 +60,7 @@ toRGB (HSV hue saturation value)
 	| hueIndex == 3 = RGB bottom falling top
 	| hueIndex == 4 = RGB rising bottom top
 	| hueIndex == 5 = RGB top bottom falling
-    | otherwise = undefined
+	| otherwise = undefined
 	where
 		(hueIndex, hueFraction) = normalize 1 (0 :: Natural, hue)
 		top = value
