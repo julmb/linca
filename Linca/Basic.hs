@@ -3,7 +3,7 @@ module Linca.Basic (indices, equal, power) where
 import Numeric.Natural
 import Text.Printf
 
-indices :: (Integral count, Integral index) => count -> [index]
+indices :: Integral index => Natural -> [index]
 indices count = [0 .. fromIntegral count - 1]
 
 equal :: Eq a => a -> a -> a

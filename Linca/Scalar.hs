@@ -6,17 +6,17 @@ import Linca.Basic
 sine :: Floating value => value -> value
 sine value = sin (value * 2 * pi)
 
-divide :: (Integral count, Fractional value) => count -> [value]
+divide :: Fractional value => Natural -> [value]
 divide count = do
 	index <- indices count
 	return $ fromIntegral (index :: Natural) / fromIntegral count
 
-divideMidpoint :: (Integral count, Fractional value) => count -> [value]
+divideMidpoint :: Fractional value => Natural -> [value]
 divideMidpoint count = do
 	index <- indices count
 	return $ (1 / 2 + fromIntegral (index :: Natural)) / fromIntegral count
 
-divideSymmetric :: (Integral count, Fractional value) => count -> [value]
+divideSymmetric :: Fractional value => Natural -> [value]
 divideSymmetric 1 = [1 / 2]
 divideSymmetric count = do
 	index <- indices count
