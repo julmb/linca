@@ -1,6 +1,8 @@
-module Linca.Scalar (sine, divide, divideMidpoint, divideSymmetric, normalize) where
+module Linca.Scalar (sine, divide, divideMidpoint, divideSymmetric, normalize, fromByte, toByte) where
 
 import Numeric.Natural
+import Data.Word
+import Linca.Error
 import Linca.Basic
 
 sine :: Floating value => value -> value
@@ -27,3 +29,12 @@ normalize length (index, value)
 	| value < 0       = normalize length (index - 1, value + length)
 	| value >= length = normalize length (index + 1, value - length)
 	| otherwise       = (index, value)
+
+fromByte :: Fractional value => Word8 -> value
+fromByte byte = fromIntegral byte / 0xFF
+
+toByte :: Real value => value -> Word8
+toByte value
+	| value < 0 || value > 1 = rangeError "toByte" "value"
+	| value == 1 = 0xFF
+	| otherwise = truncate ((realToFrac value :: Rational) * 0x100)
