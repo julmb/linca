@@ -1,7 +1,7 @@
 module Linca.Range
 (
 	Range, range, lower, upper,
-	empty, contains, clamp, size,
+	empty, size, contains, clamp,
 	unitRange, fromRange, toRange
 )
 where
@@ -20,6 +20,9 @@ range lower upper
 empty :: Eq value => Range value -> Bool
 empty range = lower range == upper range
 
+size :: Num value => Range value -> value
+size range = upper range - lower range
+
 contains :: Ord value => Range value -> value -> Bool
 contains range value = value >= lower range && value <= upper range
 
@@ -29,19 +32,17 @@ clamp range value
 	| value > upper range = upper range
 	| otherwise = value
 
-size :: Num value => Range value -> value
-size range = upper range - lower range
-
 
 unitRange :: (Ord value, Num value) => Range value
 unitRange = range 0 1
 
 fromRange :: (Real value, Fractional position) => Range value -> value -> position
 fromRange range value
+	| empty range = error $ printf "fromRange: parameter range was empty"
 	| not $ contains range value = rangeError "fromRange" "value"
 	| otherwise = realToFrac (value - lower range) / realToFrac (size range)
 
 toRange :: (Real position, Fractional value) => Range value -> position -> value
 toRange range position
-	| not $ contains unitRange position = rangeError "toRange" "position"
+	| position < 0 || position > 1 = rangeError "toRange" "position"
 	| otherwise = lower range + realToFrac position * size range
