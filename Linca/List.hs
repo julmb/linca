@@ -1,4 +1,4 @@
-module Linca.List (enum, retrieve, replaceAt, rotateLeft, rotateRight, indices, fold) where
+module Linca.List (enum, retrieve, replaceAt, rotateLeft, rotateRight, fold) where
 
 import Numeric.Natural
 import Data.Maybe
@@ -27,9 +27,6 @@ rotateLeft list = tail list ++ [head list]
 rotateRight :: [a] -> [a]
 rotateRight [] = []
 rotateRight list = [last list] ++ init list
-
-indices :: Natural -> [Natural]
-indices count = [0 .. count - 1]
 
 fold :: Foldable t => (x -> a -> a) -> t x -> a -> a
 fold = flip . foldl . flip

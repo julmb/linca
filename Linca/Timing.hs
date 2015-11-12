@@ -5,7 +5,7 @@ import Control.Concurrent
 import Control.Monad.State
 
 delay :: NominalDiffTime -> IO ()
-delay duration = threadDelay (truncate (duration * 1000000))
+delay duration = threadDelay (round (duration * 1000000))
 
 data Application state =
 	Application

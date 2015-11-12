@@ -1,7 +1,10 @@
-module Linca.Basic (equal, power) where
+module Linca.Basic (indices, equal, power) where
 
 import Numeric.Natural
 import Text.Printf
+
+indices :: (Integral count, Integral index) => count -> [index]
+indices count = [0 .. fromIntegral count - 1]
 
 equal :: Eq a => a -> a -> a
 equal a b

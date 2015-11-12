@@ -13,15 +13,17 @@ cabal-version:       >= 1.10
 library
   exposed-modules:
     Linca.Basic
-    Linca.Scalar
-    Linca.Range
-    Linca.List
-    Linca.Monad
-    Linca.Random
     Linca.ByteString
-    Linca.Cryptography
     Linca.Color
     Linca.Color.Named
+    Linca.Cryptography
+    Linca.Error
+    Linca.List
+    Linca.Map
+    Linca.Monad
+    Linca.Random
+    Linca.Range
+    Linca.Scalar
     Linca.Timing
   other-modules:
     Linca.Color.Color

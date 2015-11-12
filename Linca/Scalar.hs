@@ -1,10 +1,26 @@
-module Linca.Scalar (unitForward, unitReverse, normalize) where
+module Linca.Scalar (sine, divide, divideMidpoint, divideSymmetric, normalize) where
 
-unitForward :: Num a => a -> a
-unitForward value = value
+import Numeric.Natural
+import Linca.Basic
 
-unitReverse :: Num a => a -> a
-unitReverse value = 1 - value
+sine :: Floating value => value -> value
+sine value = sin (value * 2 * pi)
+
+divide :: (Integral count, Fractional value) => count -> [value]
+divide count = do
+	index <- indices count
+	return $ fromIntegral (index :: Natural) / fromIntegral count
+
+divideMidpoint :: (Integral count, Fractional value) => count -> [value]
+divideMidpoint count = do
+	index <- indices count
+	return $ (1 / 2 + fromIntegral (index :: Natural)) / fromIntegral count
+
+divideSymmetric :: (Integral count, Fractional value) => count -> [value]
+divideSymmetric 1 = [1 / 2]
+divideSymmetric count = do
+	index <- indices count
+	return $ fromIntegral (index :: Natural) / (fromIntegral count - 1)
 
 normalize :: (Num value, Ord value, Num index) => value -> (index, value) -> (index, value)
 normalize length (index, value)

@@ -1,30 +1,24 @@
-module Linca.Color.Color (Color, hueRange, rgb, hsv, red, green, blue, hue, saturation, value) where
+module Linca.Color.Color (Color, rgb, hsv, red, green, blue, hue, saturation, value) where
 
 import Numeric.Natural
-import Control.Monad.State
-import System.Random
+import Linca.Error
 import Linca.Scalar
-import Linca.Range
-import Linca.Random
+import Linca.Map
 
--- TODO: use Rational? update bitbucket TODOs
 data Color = RGB Rational Rational Rational | HSV Rational Rational Rational deriving (Eq, Show, Read)
-
-hueRange :: Range Rational
-hueRange = range 0 6
 
 rgb :: Rational -> Rational -> Rational -> Color
 rgb red green blue
-	| not $ contains' unitRange red   = rangeError "rgb" "red"   unitRange red
-	| not $ contains' unitRange green = rangeError "rgb" "green" unitRange green
-	| not $ contains' unitRange blue  = rangeError "rgb" "blue"  unitRange blue
+	| red   < 0 || red   > 1 = rangeError "rgb" "red"
+	| green < 0 || green > 1 = rangeError "rgb" "green"
+	| blue  < 0 || blue  > 1 = rangeError "rgb" "blue"
 	| otherwise = RGB red green blue
 
 hsv :: Rational -> Rational -> Rational -> Color
 hsv hue saturation value
-	| not $ contains  hueRange  hue        = rangeError "hsv" "hue"        hueRange  hue
-	| not $ contains' unitRange saturation = rangeError "hsv" "saturation" unitRange saturation
-	| not $ contains' unitRange value      = rangeError "hsv" "value"      unitRange value
+	| hue        < 0 || hue        >= 6 = rangeError "hsv" "hue"
+	| saturation < 0 || saturation >  1 = rangeError "hsv" "saturation"
+	| value      < 0 || value      >  1 = rangeError "hsv" "value"
 	| otherwise = HSV hue saturation value
 
 red :: Color -> Rational
@@ -63,10 +57,10 @@ toRGB (HSV hue saturation value)
 	| otherwise = undefined
 	where
 		(hueIndex, hueFraction) = normalize 1 (0 :: Natural, hue)
-		top = value
-		bottom = unitReverse saturation * value
-		rising = unitReverse (unitReverse hueFraction * saturation) * value
-		falling = unitReverse (unitForward hueFraction * saturation) * value
+		top     = value
+		bottom  = reverseMap saturation * value
+		rising  = reverseMap (reverseMap hueFraction * saturation) * value
+		falling = reverseMap (forwardMap hueFraction * saturation) * value
 
 toHSV :: Color -> Color
 toHSV (RGB red green blue)
@@ -83,15 +77,3 @@ toHSV (RGB red green blue)
 		saturation = chroma / value
 		value = maximum [red, green, blue]
 toHSV (HSV hue saturation value) = HSV hue saturation value
-
--- TODO: colors are not single dimensional, not suitable for min/max random specification
--- TODO: maybe we should drop the random library and roll our own?
-instance Random Color where
-	random = runState $ do
-		hue <- state $ randomR' (0, 6)
-		return $ hsv hue 1 1
-	randomR (minimum, maximum) = runState $ do
-		hue <- state $ randomR' (hue minimum, hue maximum)
-		saturation <- state $ randomR (saturation minimum, saturation maximum)
-		value <- state $ randomR (value minimum, value maximum)
-		return $ hsv hue saturation value
