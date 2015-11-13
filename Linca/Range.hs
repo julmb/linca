@@ -33,7 +33,7 @@ clamp range value
 	| otherwise = value
 
 
-unitRange :: (Ord value, Num value) => Range value
+unitRange :: Real value => Range value
 unitRange = range 0 1
 
 fromRange :: (Real value, Fractional position) => Range value -> value -> position
