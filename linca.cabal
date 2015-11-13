@@ -12,21 +12,20 @@ cabal-version:       >= 1.10
 
 library
   exposed-modules:
-    Linca.Basic
-    Linca.ByteString
-    Linca.Color
-    Linca.Color.Color
-    Linca.Color.Alpha
-    Linca.Color.Named
-    Linca.Cryptography
+    Linca.Graphics.Color
+    Linca.Graphics.AlphaColor
+    Linca.Graphics.NamedColor
     Linca.Error
-    Linca.List
-    Linca.Map
-    Linca.Monad
-    Linca.Random
-    Linca.Range
+    Linca.Basic
     Linca.Scalar
+    Linca.Range
+    Linca.Map
+    Linca.List
+    Linca.Monad
+    Linca.ByteString
+    Linca.Cryptography
     Linca.Timing
+    Linca.Random
   build-depends:       base, mtl, bytestring, time, random
   ghc-options:         -Wall -fno-warn-tabs -fno-warn-name-shadowing
   default-language:    Haskell2010

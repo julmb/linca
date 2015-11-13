@@ -1,4 +1,4 @@
-module Linca.Color.Color (Color, rgb, hsv, red, green, blue, hue, saturation, value) where
+module Linca.Graphics.Color (Color, rgb, hsv, red, green, blue, hue, saturation, value) where
 
 import Numeric.Natural
 import Linca.Error

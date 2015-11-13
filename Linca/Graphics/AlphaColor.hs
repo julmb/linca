@@ -1,7 +1,7 @@
-module Linca.Color.Alpha (AlphaColor, alphaColor, base, alpha, opaque) where
+module Linca.Graphics.AlphaColor (AlphaColor, alphaColor, base, alpha, opaque) where
 
 import Linca.Error
-import Linca.Color.Color
+import Linca.Graphics.Color
 
 data AlphaColor = AlphaColor { base :: Color, alpha :: Rational } deriving (Eq, Show, Read)
 
