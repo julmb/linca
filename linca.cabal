@@ -1,6 +1,6 @@
 name:                linca
-version:             0.2
-synopsis:            general-purpose library for haskell
+version:             0.3
+synopsis:            general-purpose library
 homepage:            https://bitbucket.org/brunnerj/linca
 license:             GPL-3
 license-file:        LICENSE
