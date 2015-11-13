@@ -27,6 +27,6 @@ library
     Linca.Range
     Linca.Scalar
     Linca.Timing
-  build-depends:       base, time, random, mtl, bytestring
+  build-depends:       base, mtl, bytestring, time, random
   ghc-options:         -Wall -fno-warn-tabs -fno-warn-name-shadowing
   default-language:    Haskell2010
