@@ -1,7 +1,7 @@
 module Linca.Range
 (
 	Range, range, lower, upper,
-	empty, size, contains, clamp,
+	empty, contains, size, clamp,
 	unitRange, fromRange, toRange
 )
 where
@@ -20,11 +20,11 @@ range lower upper
 empty :: Eq value => Range value -> Bool
 empty range = lower range == upper range
 
-size :: Num value => Range value -> value
-size range = upper range - lower range
-
 contains :: Ord value => Range value -> value -> Bool
 contains range value = value >= lower range && value <= upper range
+
+size :: Num value => Range value -> value
+size range = upper range - lower range
 
 clamp :: Ord value => Range value -> value -> value
 clamp range value
