@@ -21,6 +21,7 @@ library
     Linca.Range
     Linca.Map
     Linca.List
+    Linca.Size
     Linca.Monad
     Linca.ByteString
     Linca.Cryptography

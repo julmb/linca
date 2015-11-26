@@ -11,6 +11,7 @@ enum = [minBound .. maxBound]
 retrieve :: Eq a => [(a, b)] -> a -> b
 retrieve table = fromJust . flip lookup table
 
+-- TODO: generalize to Natural -> [a] -> [a] -> [a]? or is it even needed?
 replaceAt :: Natural -> a -> [a] -> [a]
 replaceAt index item list
 	| index >= length = error $ printf "Linca.List.replaceAt: parameter index (%d) was greater than or equal to the length of the list (%s)" index length
