@@ -28,5 +28,5 @@ library
     Linca.Timing
     Linca.Random
   build-depends:       base, mtl, bytestring, time, random
-  ghc-options:         -Wall -fno-warn-tabs -fno-warn-name-shadowing
+  ghc-options:         -Wall -fno-warn-tabs -fno-warn-name-shadowing -dynamic
   default-language:    Haskell2010
