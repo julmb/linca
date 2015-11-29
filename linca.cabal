@@ -23,7 +23,7 @@ library
     Linca.List
     Linca.Size
     Linca.Monad
-    Linca.ByteString
+    Linca.ByteString.Lazy
     Linca.Cryptography
     Linca.Timing
     Linca.Random
