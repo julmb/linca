@@ -1,4 +1,4 @@
-module Linca.List (enum, retrieve, replaceAt, rotateLeft, rotateRight, fold) where
+module Linca.List (enum, retrieve, replace, rotateLeft, rotateRight, fold) where
 
 import Numeric.Natural
 import Data.Maybe
@@ -11,15 +11,11 @@ enum = [minBound .. maxBound]
 retrieve :: Eq a => [(a, b)] -> a -> b
 retrieve table = fromJust . flip lookup table
 
--- TODO: generalize to Natural -> [a] -> [a] -> [a]? or is it even needed?
-replaceAt :: Natural -> a -> [a] -> [a]
-replaceAt index item list
-	| index >= length = error $ printf "Linca.List.replaceAt: parameter index (%d) was greater than or equal to the length of the list (%s)" index length
-	| otherwise = head ++ [item] ++ tail
-	where
-		length = genericLength list
-		head = genericTake (index + 0) list
-		tail = genericDrop (index + 1) list
+replace :: Natural -> [a] -> [a] -> [a]
+replace offset chunk original
+	| offset + genericLength chunk > genericLength original = error $
+		printf "replace: offset + chunk length (%d) was larger than the original length (%d)" (offset + genericLength chunk) (genericLength original :: Natural)
+	| otherwise = genericTake offset original ++ chunk ++ genericDrop (offset + genericLength chunk) original
 
 rotateLeft :: [a] -> [a]
 rotateLeft [] = []
