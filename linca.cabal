@@ -27,6 +27,7 @@ library
     Linca.Cryptography
     Linca.Timing
     Linca.Random
-  build-depends:       base >= 4.8, mtl >= 2.2, bytestring >= 0.10, time >= 1.5, random >= 1.1
+    Linca.Files
+  build-depends:       base >= 4.8, mtl >= 2.2, filepath >= 1.4, directory >= 1.2, bytestring >= 0.10, time >= 1.5, random >= 1.1
   ghc-options:         -Wall -fno-warn-tabs -fno-warn-name-shadowing -dynamic
   default-language:    Haskell2010

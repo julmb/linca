@@ -1,4 +1,4 @@
-module Linca.List (enum, retrieve, replace, rotateLeft, rotateRight, fold) where
+module Linca.List (enum, retrieve, replace, rotateLeft, rotateRight, fold, clusterConsecutive, clusterBy) where
 
 import Numeric.Natural
 import Data.Maybe
@@ -27,3 +27,13 @@ rotateRight list = [last list] ++ init list
 
 fold :: Foldable t => (x -> a -> a) -> t x -> a -> a
 fold = flip . foldl . flip
+
+clusterConsecutive :: (a -> a -> Bool) -> [a] -> [[a]]
+clusterConsecutive equal = go [] [] where
+	go gs [] [] = gs
+	go gs ys [] = gs ++ [ys]
+	go gs [] (x : xs) = go gs [x] xs
+	go gs ys (x : xs) = if equal x (last ys) then go gs (ys ++ [x]) xs else go (gs ++ [ys]) [] (x : xs)
+
+clusterBy :: (a -> a -> Ordering) -> (a -> a -> Bool) -> [a] -> [[a]]
+clusterBy compare equal = clusterConsecutive equal . sortBy compare
