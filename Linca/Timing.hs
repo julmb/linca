@@ -1,4 +1,4 @@
-module Linca.Timing (diffLocalTime, delay, Application (Application), frameDuration, initialState, updateState, present, runApplication) where
+module Linca.Timing (diffLocalTime, delay, Application (Application), interval, initial, update, runApplication) where
 
 import Data.Time
 import Control.Concurrent
@@ -13,24 +13,21 @@ delay duration = threadDelay (round (duration * 1000000))
 data Application state =
 	Application
 	{
-		frameDuration :: NominalDiffTime,
-		initialState :: state,
-		updateState :: NominalDiffTime -> state -> state,
-		present :: state -> IO ()
+		interval :: NominalDiffTime,
+		initial :: state,
+		update :: NominalDiffTime -> state -> IO state
 	}
 
 loopApplication :: Application state -> UTCTime -> StateT state IO ()
 loopApplication application lastTime = do
 	currentTime <- lift getCurrentTime
-	lift $ delay $ frameDuration application - diffUTCTime currentTime lastTime
+	lift $ delay $ interval application - diffUTCTime currentTime lastTime
 	currentTime <- lift getCurrentTime
-	state <- get
-	let newState = updateState application (diffUTCTime currentTime lastTime) state
-	lift $ present application newState
-	put newState
+	let interval = diffUTCTime currentTime lastTime
+	get >>= lift . update application interval >>= put
 	loopApplication application currentTime
 
 runApplication :: Application state -> IO ()
 runApplication application = do
-	initialTime <- getCurrentTime
-	evalStateT (loopApplication application initialTime) (initialState application)
+	time <- getCurrentTime
+	evalStateT (loopApplication application time) (initial application)
