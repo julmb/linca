@@ -1,4 +1,4 @@
-module Linca.List (enum, retrieve, replace, rotateLeft, rotateRight, fold, clusterConsecutive, clusterBy) where
+module Linca.List (enum, retrieve, replace, rotateLeft, rotateRight, prefix, suffix, fold, clusterConsecutive, clusterBy) where
 
 import Numeric.Natural
 import Data.Maybe
@@ -24,6 +24,12 @@ rotateLeft list = tail list ++ [head list]
 rotateRight :: [a] -> [a]
 rotateRight [] = []
 rotateRight list = [last list] ++ init list
+
+prefix :: Natural -> [a] -> [a]
+prefix length list = genericTake length list
+
+suffix :: Natural -> [a] -> [a]
+suffix length list = genericDrop (genericLength list - length) list
 
 fold :: Foldable t => (x -> a -> a) -> t x -> a -> a
 fold = flip . foldl . flip
