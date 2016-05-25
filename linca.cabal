@@ -20,6 +20,7 @@ library
     Linca.Scalar
     Linca.Range
     Linca.Map
+    Linca.Lens
     Linca.List
     Linca.Size
     Linca.Monad
