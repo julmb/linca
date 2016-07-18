@@ -13,7 +13,7 @@ get :: Lens object value -> (object -> value)
 get lens = getConst . lens Const
 
 set :: Lens object value -> value -> (object -> object)
-set lens value = runIdentity . lens (Identity . const value)
+set lens value = over lens (const value)
 
 over :: Lens object value -> (value -> value) -> (object -> object)
 over lens f = runIdentity . lens (Identity . f)
