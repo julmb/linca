@@ -1,13 +1,7 @@
-module Linca.Map (forwardMap, reverseMap, sineMap, powerMap) where
+module Linca.Map (sineMap, powerMap) where
 
 import Linca.Scalar
 import Linca.Range
-
-forwardMap :: Num value => value -> value
-forwardMap value = value
-
-reverseMap :: Num value => value -> value
-reverseMap value = 1 - value
 
 sineMap :: RealFrac value => value -> value
 sineMap = fromRange output . sine . toRange input where

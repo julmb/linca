@@ -3,7 +3,6 @@ module Linca.Graphics.Color (Color, rgb, hsv, red, green, blue, hue, saturation,
 import Numeric.Natural
 import Linca.Error
 import Linca.Scalar
-import Linca.Map
 
 data Color = RGB Rational Rational Rational | HSV Rational Rational Rational deriving (Eq, Show, Read)
 
@@ -57,10 +56,11 @@ toRGB (HSV hue saturation value)
 	| otherwise = undefined
 	where
 		(hueIndex, hueFraction) = normalize 1 (0 :: Natural, hue)
-		top     = value
-		bottom  = reverseMap saturation * value
-		rising  = reverseMap (reverseMap hueFraction * saturation) * value
-		falling = reverseMap (forwardMap hueFraction * saturation) * value
+		result position = (1 - (1 - position) * saturation) * value
+		bottom  = result 0
+		top     = result 1
+		rising  = result hueFraction
+		falling = result (1 - hueFraction)
 
 toHSV :: Color -> Color
 toHSV (RGB red green blue)
