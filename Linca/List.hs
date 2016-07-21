@@ -31,7 +31,7 @@ prefix length list = genericTake length list
 suffix :: Natural -> [a] -> [a]
 suffix length list = genericDrop (genericLength list - length) list
 
-fold :: Foldable t => (x -> a -> a) -> t x -> a -> a
+fold :: Foldable t => (x -> a -> a) -> (t x -> a -> a)
 fold = flip . foldl . flip
 
 clusterConsecutive :: (a -> a -> Bool) -> [a] -> [[a]]

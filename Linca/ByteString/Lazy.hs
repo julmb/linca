@@ -6,7 +6,7 @@ import Data.Word
 import qualified Data.ByteString.Lazy as BL
 import Text.Printf
 
-fold :: (Word8 -> a -> a) -> BL.ByteString -> a -> a
+fold :: (Word8 -> a -> a) -> (BL.ByteString -> a -> a)
 fold = flip . BL.foldl . flip
 
 replace :: Natural -> BL.ByteString -> BL.ByteString -> BL.ByteString
