@@ -55,7 +55,6 @@ fromByte byte = fromIntegral byte / 0xFF
 
 toByte :: Rational -> Word8
 toByte value
-	-- TODO: error should be called directly, only message generated
 	| violates unitRange value = error $ rangeErrorMessage "toByte" "value" unitRange value
 	| value == 1 = 0xFF
 	| otherwise = truncate (value * 0x100)
