@@ -12,6 +12,6 @@ fold = flip . BL.foldl . flip
 
 replace :: Natural -> BL.ByteString -> BL.ByteString -> BL.ByteString
 replace offset chunk original
-	| offset + fromIntegral (BL.length chunk) > fromIntegral (BL.length original) = localError "replace" $
+	| offset + fromIntegral (BL.length chunk) > fromIntegral (BL.length original) = error $ errorMessage "replace" $
 		printf "offset + chunk length (%d) was larger than the original length (%d)" (offset + fromIntegral (BL.length chunk)) (BL.length original)
 	| otherwise = BL.take (fromIntegral offset) original <> chunk <> BL.drop (fromIntegral offset + BL.length chunk) original

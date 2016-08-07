@@ -8,7 +8,7 @@ import Linca.Range
 
 clamp :: Ord value => value -> value -> value -> value
 clamp lower upper value
-	| lower > upper = localError "clamp" "parameter lower was larger than parameter upper"
+	| lower > upper = error $ errorMessage "clamp" "parameter lower was larger than parameter upper"
 	| value < lower = lower
 	| value > upper = upper
 	| otherwise = value
@@ -40,14 +40,14 @@ normalize length (index, value)
 
 fromRange :: (Real value, Fractional position) => value -> value -> value -> position
 fromRange lower upper value
-	| lower >= upper = localError "fromRange" "parameter lower was larger than or equal to parameter upper"
-	| violates (rangeII lower upper) value = rangeError' "fromRange" "value"
+	| lower >= upper = error $ errorMessage "fromRange" "parameter lower was larger than or equal to parameter upper"
+	| violates (rangeII lower upper) value = error $ rangeErrorMessage' "fromRange" "value"
 	| otherwise = realToFrac (value - lower) / realToFrac (upper - lower)
 
 toRange :: (Ord value, Real position, Fractional value) => value -> value -> position -> value
 toRange lower upper position
-	| lower > upper = localError "toRange" "parameter lower was larger than parameter upper"
-	| violates unitRange position = rangeError' "toRange" "position"
+	| lower > upper = error $ errorMessage "toRange" "parameter lower was larger than parameter upper"
+	| violates unitRange position = error $ rangeErrorMessage' "toRange" "position"
 	| otherwise = lower + realToFrac position * (upper - lower)
 
 fromByte :: Word8 -> Rational
@@ -55,6 +55,7 @@ fromByte byte = fromIntegral byte / 0xFF
 
 toByte :: Rational -> Word8
 toByte value
-	| violates unitRange value = rangeError "toByte" "value" unitRange value
+	-- TODO: error should be called directly, only message generated
+	| violates unitRange value = error $ rangeErrorMessage "toByte" "value" unitRange value
 	| value == 1 = 0xFF
 	| otherwise = truncate (value * 0x100)

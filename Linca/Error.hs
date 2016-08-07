@@ -1,6 +1,6 @@
-module Linca.Error (localError) where
+module Linca.Error (errorMessage) where
 
 import Text.Printf
 
-localError :: String -> String -> result
-localError location message = error $ printf "%s: %s" location message
+errorMessage :: String -> String -> String
+errorMessage location message = printf "%s: %s" location message

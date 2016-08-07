@@ -1,4 +1,4 @@
-module Linca.Range (Range, rangeII, rangeIE, contains, violates, unitRange, rangeError', rangeError) where
+module Linca.Range (Range, rangeII, rangeIE, contains, violates, unitRange, rangeErrorMessage', rangeErrorMessage) where
 
 import Text.Printf
 import Linca.Error
@@ -8,12 +8,12 @@ data Range value = Range (Bound value) (Bound value)
 
 rangeII :: Ord value => value -> value -> Range value
 rangeII lower upper
-	| lower > upper = localError "rangeII" "parameter lower was larger than parameter upper"
+	| lower > upper = error $ errorMessage "rangeII" "parameter lower was larger than parameter upper"
 	| otherwise = Range (Inclusive lower) (Inclusive upper)
 
 rangeIE :: Ord value => value -> value -> Range value
 rangeIE lower upper
-	| lower > upper = localError "rangeIE" "parameter lower was larger than parameter upper"
+	| lower > upper = error $ errorMessage "rangeIE" "parameter lower was larger than parameter upper"
 	| otherwise = Range (Inclusive lower) (Exclusive upper)
 
 instance Show value => Show (Range value) where
@@ -44,8 +44,8 @@ violates range = not . contains range
 unitRange :: Real value => Range value
 unitRange = rangeII 0 1
 
-rangeError' :: String -> String -> result
-rangeError' location name = localError location $ printf "value %s was outside of the allowed range" name
+rangeErrorMessage' :: String -> String -> String
+rangeErrorMessage' location name = errorMessage location $ printf "value %s was outside of the allowed range" name
 
-rangeError :: Show value => String -> String -> Range value -> value -> result
-rangeError location name range value = localError location $ printf "value %s (%s) was outside of the allowed range (%s)" name (show value) (show range)
+rangeErrorMessage :: Show value => String -> String -> Range value -> value -> String
+rangeErrorMessage location name range value = errorMessage location $ printf "value %s (%s) was outside of the allowed range (%s)" name (show value) (show range)

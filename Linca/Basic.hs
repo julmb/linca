@@ -8,7 +8,7 @@ indices count = [0 .. count - 1]
 
 equal :: Eq a => a -> a -> a
 equal a b
-	| a /= b = localError "equal" "parameters a and b were not equal"
+	| a /= b = error $ errorMessage "equal" "parameters a and b were not equal"
 	| otherwise = a
 
 power :: Natural -> (a -> a) -> (a -> a)

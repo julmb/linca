@@ -11,16 +11,16 @@ data Color = RGB Rational Rational Rational | HSV Rational Rational Rational der
 
 rgb :: Rational -> Rational -> Rational -> Color
 rgb red green blue
-	| violates unitRange red   = rangeError "rgb" "red"   unitRange red
-	| violates unitRange green = rangeError "rgb" "green" unitRange green
-	| violates unitRange blue  = rangeError "rgb" "blue"  unitRange blue
+	| violates unitRange red   = error $ rangeErrorMessage "rgb" "red"   unitRange red
+	| violates unitRange green = error $ rangeErrorMessage "rgb" "green" unitRange green
+	| violates unitRange blue  = error $ rangeErrorMessage "rgb" "blue"  unitRange blue
 	| otherwise = RGB red green blue
 
 hsv :: Rational -> Rational -> Rational -> Color
 hsv hue saturation value
-	| violates hexaRange hue        = rangeError "hsv" "hue"        hexaRange hue
-	| violates unitRange saturation = rangeError "hsv" "saturation" unitRange saturation
-	| violates unitRange value      = rangeError "hsv" "value"      unitRange value
+	| violates hexaRange hue        = error $ rangeErrorMessage "hsv" "hue"        hexaRange hue
+	| violates unitRange saturation = error $ rangeErrorMessage "hsv" "saturation" unitRange saturation
+	| violates unitRange value      = error $ rangeErrorMessage "hsv" "value"      unitRange value
 	| otherwise = HSV hue saturation value
 
 red :: Color -> Rational
