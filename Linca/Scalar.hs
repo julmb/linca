@@ -34,9 +34,10 @@ divideSymmetric count = do
 
 normalize :: (Integral index, Real value) => value -> (index, value) -> (index, value)
 normalize length (index, value)
-	| value < 0       = normalize length (index - 1, value + length)
-	| value >= length = normalize length (index + 1, value - length)
-	| otherwise       = (index, value)
+	| violates (rangeEN 0) length = error $ rangeErrorMessage' "normalize" "length"
+	| value < 0                   = normalize length (index - 1, value + length)
+	| value >= length             = normalize length (index + 1, value - length)
+	| otherwise                   = (index, value)
 
 fromRange :: (Real value, Fractional position) => value -> value -> value -> position
 fromRange lower upper value

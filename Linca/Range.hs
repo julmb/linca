@@ -1,10 +1,22 @@
-module Linca.Range (Range, rangeII, rangeIE, contains, violates, unitRange, rangeErrorMessage', rangeErrorMessage) where
+module Linca.Range (Range, rangeIN, rangeNI, rangeEN, rangeNE, rangeII, rangeIE, contains, violates, unitRange, rangeErrorMessage', rangeErrorMessage) where
 
 import Text.Printf
 import Linca.Error
 
 data Bound value = None | Inclusive value | Exclusive value
 data Range value = Range (Bound value) (Bound value)
+
+rangeIN :: value -> Range value
+rangeIN lower = Range (Inclusive lower) None
+
+rangeNI :: value -> Range value
+rangeNI upper = Range None (Inclusive upper)
+
+rangeEN :: value -> Range value
+rangeEN lower = Range (Exclusive lower) None
+
+rangeNE :: value -> Range value
+rangeNE upper = Range None (Exclusive upper)
 
 rangeII :: Ord value => value -> value -> Range value
 rangeII lower upper
