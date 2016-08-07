@@ -1,23 +1,26 @@
 module Linca.Graphics.Color (Color, rgb, hsv, red, green, blue, hue, saturation, value) where
 
 import Numeric.Natural
-import Linca.Error
 import Linca.Scalar
+import Linca.Range
+
+hexaRange :: Range Rational
+hexaRange = rangeIE 0 6
 
 data Color = RGB Rational Rational Rational | HSV Rational Rational Rational deriving (Eq, Show, Read)
 
 rgb :: Rational -> Rational -> Rational -> Color
 rgb red green blue
-	| red   < 0 || red   > 1 = rangeError "rgb" "red"
-	| green < 0 || green > 1 = rangeError "rgb" "green"
-	| blue  < 0 || blue  > 1 = rangeError "rgb" "blue"
+	| violates unitRange red   = rangeError "rgb" "red"   unitRange red
+	| violates unitRange green = rangeError "rgb" "green" unitRange green
+	| violates unitRange blue  = rangeError "rgb" "blue"  unitRange blue
 	| otherwise = RGB red green blue
 
 hsv :: Rational -> Rational -> Rational -> Color
 hsv hue saturation value
-	| hue        < 0 || hue        >= 6 = rangeError "hsv" "hue"
-	| saturation < 0 || saturation >  1 = rangeError "hsv" "saturation"
-	| value      < 0 || value      >  1 = rangeError "hsv" "value"
+	| violates hexaRange hue        = rangeError "hsv" "hue"        hexaRange hue
+	| violates unitRange saturation = rangeError "hsv" "saturation" unitRange saturation
+	| violates unitRange value      = rangeError "hsv" "value"      unitRange value
 	| otherwise = HSV hue saturation value
 
 red :: Color -> Rational

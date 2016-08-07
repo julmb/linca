@@ -1,16 +1,16 @@
 module Linca.Basic (indices, equal, power) where
 
 import Numeric.Natural
-import Text.Printf
+import Linca.Error
 
 indices :: Natural -> [Natural]
 indices count = [0 .. count - 1]
 
 equal :: Eq a => a -> a -> a
 equal a b
-	| a /= b = error $ printf "Linca.Basic.equal: parameters a and b were not equal"
+	| a /= b = localError "equal" "parameters a and b were not equal"
 	| otherwise = a
 
-power :: (a -> a) -> Natural -> (a -> a)
-power _ 0 = id
-power f n = f . power f (n - 1)
+power :: Natural -> (a -> a) -> (a -> a)
+power 0 _ = id
+power n f = f . power (n - 1) f

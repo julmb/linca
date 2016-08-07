@@ -1,48 +1,51 @@
-module Linca.Range
-(
-	Range, range, lower, upper,
-	empty, contains, size, clamp,
-	unitRange, fromRange, toRange
-)
-where
+module Linca.Range (Range, rangeII, rangeIE, contains, violates, unitRange, rangeError', rangeError) where
 
 import Text.Printf
 import Linca.Error
 
-data Range value = Range { lower :: value, upper :: value } deriving (Eq, Show, Read)
+data Bound value = None | Inclusive value | Exclusive value
+data Range value = Range (Bound value) (Bound value)
 
-range :: Ord value => value -> value -> Range value
-range lower upper
-	| lower > upper = error $ printf "range: parameter lower was larger than parameter upper"
-	| otherwise = Range lower upper
+rangeII :: Ord value => value -> value -> Range value
+rangeII lower upper
+	| lower > upper = localError "rangeII" "parameter lower was larger than parameter upper"
+	| otherwise = Range (Inclusive lower) (Inclusive upper)
 
+rangeIE :: Ord value => value -> value -> Range value
+rangeIE lower upper
+	| lower > upper = localError "rangeIE" "parameter lower was larger than parameter upper"
+	| otherwise = Range (Inclusive lower) (Exclusive upper)
 
-empty :: Eq value => Range value -> Bool
-empty range = lower range == upper range
+instance Show value => Show (Range value) where
+	show (Range None None) = "{..}"
+	show (Range (Inclusive lower) None) = printf "{%s ..}" (show lower)
+	show (Range None (Inclusive upper)) = printf "{.. %s}" (show upper)
+	show (Range (Exclusive lower) None) = printf "{%s <..}" (show lower)
+	show (Range None (Exclusive upper)) = printf "{..< %s}" (show upper)
+	show (Range (Inclusive lower) (Inclusive upper)) = printf "{%s .. %s}" (show lower) (show upper)
+	show (Range (Exclusive lower) (Inclusive upper)) = printf "{%s <.. %s}" (show lower) (show upper)
+	show (Range (Inclusive lower) (Exclusive upper)) = printf "{%s ..< %s}" (show lower) (show upper)
+	show (Range (Exclusive lower) (Exclusive upper)) = printf "{%s <..< %s}" (show lower) (show upper)
 
 contains :: Ord value => Range value -> value -> Bool
-contains range value = value >= lower range && value <= upper range
+contains (Range None None) _ = True
+contains (Range (Inclusive lower) None) value = lower <= value
+contains (Range None (Inclusive upper)) value = value <= upper
+contains (Range (Exclusive lower) None) value = lower < value
+contains (Range None (Exclusive upper)) value = value < upper
+contains (Range (Inclusive lower) (Inclusive upper)) value = lower <= value && value <= upper
+contains (Range (Exclusive lower) (Inclusive upper)) value = lower < value && value <= upper
+contains (Range (Inclusive lower) (Exclusive upper)) value = lower <= value && value < upper
+contains (Range (Exclusive lower) (Exclusive upper)) value = lower < value && value < upper
 
-size :: Num value => Range value -> value
-size range = upper range - lower range
-
-clamp :: Ord value => Range value -> value -> value
-clamp range value
-	| value < lower range = lower range
-	| value > upper range = upper range
-	| otherwise = value
-
+violates :: Ord value => Range value -> value -> Bool
+violates range = not . contains range
 
 unitRange :: Real value => Range value
-unitRange = range 0 1
+unitRange = rangeII 0 1
 
-fromRange :: (Real value, Fractional position) => Range value -> value -> position
-fromRange range value
-	| empty range = error $ printf "fromRange: parameter range was empty"
-	| not $ contains range value = rangeError "fromRange" "value"
-	| otherwise = realToFrac (value - lower range) / realToFrac (size range)
+rangeError' :: String -> String -> result
+rangeError' location name = localError location $ printf "value %s was outside of the allowed range" name
 
-toRange :: (Real position, Fractional value) => Range value -> position -> value
-toRange range position
-	| position < 0 || position > 1 = rangeError "toRange" "position"
-	| otherwise = lower range + realToFrac position * size range
+rangeError :: Show value => String -> String -> Range value -> value -> result
+rangeError location name range value = localError location $ printf "value %s (%s) was outside of the allowed range (%s)" name (show value) (show range)

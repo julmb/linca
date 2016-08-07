@@ -4,6 +4,7 @@ import Numeric.Natural
 import Data.Maybe
 import Data.List
 import Text.Printf
+import Linca.Error
 
 enum :: (Enum a, Bounded a) => [a]
 enum = [minBound .. maxBound]
@@ -13,8 +14,8 @@ retrieve table = fromJust . flip lookup table
 
 replace :: Natural -> [a] -> [a] -> [a]
 replace offset chunk original
-	| offset + genericLength chunk > genericLength original = error $
-		printf "replace: offset + chunk length (%d) was larger than the original length (%d)" (offset + genericLength chunk) (genericLength original :: Natural)
+	| offset + genericLength chunk > genericLength original = localError "replace" $
+		printf "offset + chunk length (%d) was larger than the original length (%d)" (offset + genericLength chunk) (genericLength original :: Natural)
 	| otherwise = genericTake offset original ++ chunk ++ genericDrop (offset + genericLength chunk) original
 
 rotateLeft :: [a] -> [a]
