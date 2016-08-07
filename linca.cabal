@@ -26,7 +26,6 @@ library
     Linca.Map
     Linca.Lens
     Linca.List
-    Linca.Size
     Linca.Monad
     Linca.ByteString.Lazy
     Linca.Cryptography
