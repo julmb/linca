@@ -15,7 +15,7 @@ retrieve table = fromJust . flip lookup table
 replace :: Natural -> [a] -> [a] -> [a]
 replace offset chunk original
 	| offset + genericLength chunk > genericLength original = error $ errorMessage "replace" $
-		printf "offset + chunk length (%d) was larger than the original length (%d)" (offset + genericLength chunk) (genericLength original :: Natural)
+		printf "offset + chunk length (%u) was larger than the original length (%u)" (offset + genericLength chunk) (genericLength original :: Natural)
 	| otherwise = genericTake offset original ++ chunk ++ genericDrop (offset + genericLength chunk) original
 
 rotateLeft :: [a] -> [a]
