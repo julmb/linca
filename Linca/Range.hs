@@ -63,7 +63,7 @@ word16Range :: Real value => Range value
 word16Range = rangeIE 0 0x10000
 
 rangeErrorMessage' :: String -> String -> String
-rangeErrorMessage' location name = errorMessage location $ printf "value %s was outside of the allowed range" name
+rangeErrorMessage' location name = errorMessage location $ printf "value \"%s\" was outside of the allowed range" name
 
 rangeErrorMessage :: Show value => String -> String -> Range value -> value -> String
-rangeErrorMessage location name range value = errorMessage location $ printf "value %s (%s) was outside of the allowed range (%s)" name (show value) (show range)
+rangeErrorMessage location name range value = errorMessage location $ printf "value \"%s\" (%s) was outside of the allowed range (%s)" name (show value) (show range)
