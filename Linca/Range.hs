@@ -1,4 +1,4 @@
-module Linca.Range (Range, rangeIN, rangeNI, rangeEN, rangeNE, rangeII, rangeIE, contains, violates, unitRange, rangeErrorMessage', rangeErrorMessage) where
+module Linca.Range (Range, rangeIN, rangeNI, rangeEN, rangeNE, rangeII, rangeIE, contains, violates, unitRange, word8Range, word16Range, rangeErrorMessage', rangeErrorMessage) where
 
 import Text.Printf
 import Linca.Error
@@ -55,6 +55,12 @@ violates range = not . contains range
 
 unitRange :: Real value => Range value
 unitRange = rangeII 0 1
+
+word8Range :: Real value => Range value
+word8Range = rangeIE 0 0x100
+
+word16Range :: Real value => Range value
+word16Range = rangeIE 0 0x10000
 
 rangeErrorMessage' :: String -> String -> String
 rangeErrorMessage' location name = errorMessage location $ printf "value %s was outside of the allowed range" name
