@@ -15,19 +15,18 @@ data Application state =
 	{
 		interval :: NominalDiffTime,
 		initial :: state,
-		update :: NominalDiffTime -> state -> IO state
+		update :: NominalDiffTime -> StateT state IO ()
 	}
 
-loopApplication :: Application state -> UTCTime -> StateT state IO ()
+loopApplication :: Application state -> UTCTime -> StateT state IO result
 loopApplication application lastTime = do
 	currentTime <- lift getCurrentTime
-	lift $ delay $ interval application - diffUTCTime currentTime lastTime
-	currentTime <- lift getCurrentTime
-	let interval = diffUTCTime currentTime lastTime
-	get >>= lift . update application interval >>= put
-	loopApplication application currentTime
+	lift $ delay (interval application - diffUTCTime currentTime lastTime)
+	updateTime <- lift getCurrentTime
+	update application (diffUTCTime updateTime lastTime)
+	loopApplication application updateTime
 
-runApplication :: Application state -> IO ()
+runApplication :: Application state -> IO result
 runApplication application = do
 	time <- getCurrentTime
 	evalStateT (loopApplication application time) (initial application)
