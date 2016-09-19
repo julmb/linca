@@ -1,4 +1,4 @@
-module Linca.Lens (Lens, lens, get, set, over, at) where
+module Linca.Lens (Lens, lens, view, set, over, at) where
 
 import Data.Map
 import Data.Functor.Const
@@ -7,10 +7,10 @@ import Data.Functor.Identity
 type Lens object value = forall f. Functor f => (value -> f value) -> (object -> f object)
 
 lens :: (object -> value) -> (value -> object -> object) -> Lens object value
-lens get set f object = fmap (flip set object) (f (get object))
+lens view set f object = fmap (flip set object) (f (view object))
 
-get :: Lens object value -> (object -> value)
-get lens = getConst . lens Const
+view :: Lens object value -> (object -> value)
+view lens = getConst . lens Const
 
 set :: Lens object value -> value -> (object -> object)
 set lens value = over lens (const value)
