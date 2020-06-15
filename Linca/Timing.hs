@@ -1,11 +1,8 @@
-module Linca.Timing (diffLocalTime, delay, Application (Application), interval, initial, update, runApplication) where
+module Linca.Timing (delay, Application (Application), interval, initial, update, runApplication) where
 
 import Data.Time
 import Control.Concurrent
 import Control.Monad.State
-
-diffLocalTime :: LocalTime -> LocalTime -> NominalDiffTime
-diffLocalTime time1 time2 = diffUTCTime (localTimeToUTC utc time1) (localTimeToUTC utc time2)
 
 delay :: NominalDiffTime -> IO ()
 delay duration = threadDelay (round (duration * 1000000))
