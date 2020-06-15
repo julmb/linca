@@ -1,10 +1,13 @@
-module Linca.Scalar (clamp, sine, divide, divideMidpoint, divideSymmetric, normalize, fromRange, toRange, fromByte, toByte) where
+module Linca.Scalar (clamp, square, squareRoot, sine, divide, divideMidpoint, divideSymmetric, normalize, fromRange, toRange, fromByte, toByte) where
 
 import Numeric.Natural
+import Data.Maybe
+import Data.List
 import Data.Word
 import Linca.Error
 import Linca.Basic
 import Linca.Range
+import Linca.List
 
 clamp :: Ord value => value -> value -> value -> value
 clamp lower upper value
@@ -12,6 +15,18 @@ clamp lower upper value
 	| value < lower = lower
 	| value > upper = upper
 	| otherwise = value
+
+square :: Natural -> Natural
+square n = n * n
+
+squareRoot :: Natural -> Natural
+squareRoot 0 = 0
+squareRoot 1 = 1
+squareRoot n = fromJust $ find test $ iterate step initial where
+	test k = square k <= n && n < square (k + 1)
+	[k, l] = suffix 2 $ takeWhile (n >=) (1 : iterate square 2)
+	initial = squareRoot (n `div` l) * k
+	step k = (k + n `div` k) `div` 2
 
 sine :: Double -> Double
 sine value = sin (value * 2 * pi)
