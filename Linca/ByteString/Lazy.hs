@@ -1,7 +1,6 @@
 module Linca.ByteString.Lazy (fold, replace) where
 
 import Numeric.Natural
-import Data.Monoid
 import Data.Word
 import qualified Data.ByteString.Lazy as BL
 import Text.Printf
