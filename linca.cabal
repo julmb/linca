@@ -1,7 +1,7 @@
 name:                linca
 version:             0.4
 synopsis:            general-purpose library
-homepage:            https://bitbucket.org/brunnerj/linca
+homepage:            https://github.com/julianbrunner/linca
 license:             GPL-3
 license-file:        LICENSE
 author:              Julian Brunner
