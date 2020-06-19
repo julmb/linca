@@ -5,7 +5,6 @@ import Data.Maybe
 import Data.List
 import Data.Word
 import Linca.Error
-import Linca.Basic
 import Linca.Range
 import Linca.List
 

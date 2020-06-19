@@ -1,10 +1,16 @@
-module Linca.List (enum, retrieve, replace, rotateLeft, rotateRight, prefix, suffix, fold, clusterConsecutive, clusterBy) where
+module Linca.List (naturals, indices, enum, retrieve, replace, rotateLeft, rotateRight, prefix, suffix, fold, clusterConsecutive, clusterBy) where
 
 import Numeric.Natural
 import Data.Maybe
 import Data.List
 import Text.Printf
 import Linca.Error
+
+naturals :: [Natural]
+naturals = enumFrom 0
+
+indices :: Natural -> [Natural]
+indices count = [0 .. count - 1]
 
 enum :: (Enum a, Bounded a) => [a]
 enum = [minBound .. maxBound]

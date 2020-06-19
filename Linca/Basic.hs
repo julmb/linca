@@ -1,10 +1,7 @@
-module Linca.Basic (indices, equal, power) where
+module Linca.Basic (equal, power) where
 
 import Numeric.Natural
 import Linca.Error
-
-indices :: Natural -> [Natural]
-indices count = [0 .. count - 1]
 
 equal :: Eq a => a -> a -> a
 equal a b
