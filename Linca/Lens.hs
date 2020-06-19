@@ -7,7 +7,7 @@ import Data.Functor.Identity
 type Lens object value = forall f. Functor f => (value -> f value) -> (object -> f object)
 
 lens :: (object -> value) -> (value -> object -> object) -> Lens object value
-lens view set f object = fmap (flip set object) (f (view object))
+lens view set f object = flip set object <$> f (view object)
 
 view :: Lens object value -> (object -> value)
 view lens = getConst . lens Const
@@ -19,6 +19,6 @@ over :: Lens object value -> (value -> value) -> (object -> object)
 over lens f = runIdentity . lens (Identity . f)
 
 at :: Ord key => key -> Lens (Map key value) value
-at key = lens g s where
-	g map = map ! key
-	s value map = insert key value map
+at key = lens view set where
+	view map = map ! key
+	set value map = insert key value map
