@@ -1,4 +1,4 @@
-module Linca.NaturalEncoding where
+module Linca.Countable where
 
 import Numeric.Natural
 import Data.Word

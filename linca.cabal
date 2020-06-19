@@ -21,7 +21,7 @@ library
     Linca.Graphics.NamedColor
     Linca.Error
     Linca.Basic
-    Linca.NaturalEncoding
+    Linca.Countable
     Linca.Scalar
     Linca.Range
     Linca.Map
