@@ -1,10 +1,14 @@
-module Linca.ByteString.Lazy (fold, replace) where
+module Linca.ByteString.Lazy (extend, fold, replace) where
 
 import Numeric.Natural
 import Data.Word
+import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BL
 import Text.Printf
 import Linca.Error
+
+extend :: BS.ByteString -> BL.ByteString -> BL.ByteString
+extend chunk rest = BL.fromStrict chunk <> rest
 
 fold :: (Word8 -> a -> a) -> (BL.ByteString -> a -> a)
 fold = flip . BL.foldl . flip
