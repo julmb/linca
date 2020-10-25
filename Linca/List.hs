@@ -1,4 +1,4 @@
-module Linca.List (naturals, indices, enum, retrieve, replace, rotateLeft, rotateRight, prefix, suffix, fold, clusterConsecutive, clusterBy) where
+module Linca.List (naturals, indices, enum, retrieve, replace, rotateLeft, rotateRight, prefix, suffix, fold, clusterConsecutive, clusterBy, bwt, ibwt) where
 
 import Numeric.Natural
 import Data.Maybe
@@ -32,6 +32,12 @@ rotateRight :: [a] -> [a]
 rotateRight [] = []
 rotateRight list = [last list] ++ init list
 
+rotate :: Natural -> [a] -> [a]
+rotate = genericDrop <> genericTake
+
+rotations :: [a] -> [[a]]
+rotations xs = init (zipWith (++) (tails xs) (inits xs))
+
 prefix :: Natural -> [a] -> [a]
 prefix length list = genericTake length list
 
@@ -50,3 +56,13 @@ clusterConsecutive equal = go [] [] where
 
 clusterBy :: (a -> a -> Ordering) -> (a -> a -> Bool) -> [a] -> [[a]]
 clusterBy compare equal = clusterConsecutive equal . sortBy compare
+
+bwt :: Ord a => [a] -> [Maybe a]
+bwt xs = map last $ sort $ rotations $ Nothing : map Just xs
+
+ibwt :: Ord a => [Maybe a] -> [a]
+ibwt xs = text where
+	adjust table = sort $ zipWith (:) xs table
+	empty = genericReplicate (genericLength xs) []
+	table = genericIndex (iterate adjust empty) (genericLength xs)
+	text = catMaybes $ fromJust $ find (\row -> head row == Nothing) table
