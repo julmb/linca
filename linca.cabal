@@ -1,20 +1,25 @@
+cabal-version:       3.8
+
 name:                linca
 version:             0.4
-synopsis:            general-purpose library
-homepage:            https://github.com/julianbrunner/linca
-license:             GPL-3
-license-file:        LICENSE
-author:              Julian Brunner
-maintainer:          julianbrunner@gmail.com
-category:            Library
-build-type:          Simple
-cabal-version:       >= 1.10
+
+common configuration
+  default-language:    GHC2021
+  default-extensions:
+    DataKinds
+    DerivingStrategies
+    DisambiguateRecordFields
+    ExplicitNamespaces
+    GADTs
+    MonoLocalBinds
+    LambdaCase
+    RoleAnnotations
+  ghc-options:         -Wall -Wunused-packages -Wmissing-export-lists -Wprepositive-qualified-module -Wno-name-shadowing
 
 library
-  default-language:    Haskell2010
-  default-extensions:  NoMonomorphismRestriction RankNTypes
+  import:              configuration
   build-depends:       base >= 4.9, containers >= 0.5, mtl >= 2.2, filepath >= 1.4, directory >= 1.2, bytestring >= 0.10, time >= 1.5, random >= 1.1
-  ghc-options:         -Wall -fno-warn-tabs -fno-warn-name-shadowing
+  --hs-source-dirs:      source
   exposed-modules:
     Linca.Graphics.Color
     Linca.Graphics.AlphaColor
