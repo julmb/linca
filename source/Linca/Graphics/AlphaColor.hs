@@ -7,8 +7,8 @@ data AlphaColor = AlphaColor { base :: Color, alpha :: Rational } deriving (Eq, 
 
 alphaColor :: Color -> Rational -> AlphaColor
 alphaColor base alpha
-	| violates unitRange alpha = error $ rangeErrorMessage "alphaColor" "alpha" unitRange alpha
-	| otherwise = AlphaColor base alpha
+    | violates unitRange alpha = error $ rangeErrorMessage "alphaColor" "alpha" unitRange alpha
+    | otherwise = AlphaColor base alpha
 
 opaque :: Color -> AlphaColor
 opaque color = alphaColor color 1

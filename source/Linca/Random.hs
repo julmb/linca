@@ -8,10 +8,10 @@ import System.Random
 import Linca.Scalar
 
 instance (Random t, Integral t) => Random (Ratio t) where
-	random = runState $ do
-		let denominator = 1000000
-		numerator <- state $ randomR (0, denominator)
-		return $ numerator % denominator
-	randomR (minimum, maximum) = runState $ do
-		fraction <- state random
-		return $ toRange minimum maximum (fraction :: Rational)
+    random = runState $ do
+        let denominator = 1000000
+        numerator <- state $ randomR (0, denominator)
+        return $ numerator % denominator
+    randomR (minimum, maximum) = runState $ do
+        fraction <- state random
+        return $ toRange minimum maximum (fraction :: Rational)

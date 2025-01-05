@@ -20,9 +20,9 @@ retrieve table = fromJust . flip lookup table
 
 replace :: Natural -> [a] -> [a] -> [a]
 replace offset chunk original
-	| offset + genericLength chunk > genericLength original = error $ errorMessage "replace" $
-		printf "offset + chunk length (%u) was larger than the original length (%u)" (offset + genericLength chunk) (genericLength original :: Natural)
-	| otherwise = genericTake offset original ++ chunk ++ genericDrop (offset + genericLength chunk) original
+    | offset + genericLength chunk > genericLength original = error $ errorMessage "replace" $
+        printf "offset + chunk length (%u) was larger than the original length (%u)" (offset + genericLength chunk) (genericLength original :: Natural)
+    | otherwise = genericTake offset original ++ chunk ++ genericDrop (offset + genericLength chunk) original
 
 rotateLeft :: [a] -> [a]
 rotateLeft [] = []
@@ -43,10 +43,10 @@ fold = flip . foldl . flip
 
 clusterConsecutive :: (a -> a -> Bool) -> [a] -> [[a]]
 clusterConsecutive equal = go [] [] where
-	go gs [] [] = gs
-	go gs ys [] = gs ++ [ys]
-	go gs [] (x : xs) = go gs [x] xs
-	go gs ys (x : xs) = if equal x (last ys) then go gs (ys ++ [x]) xs else go (gs ++ [ys]) [] (x : xs)
+    go gs [] [] = gs
+    go gs ys [] = gs ++ [ys]
+    go gs [] (x : xs) = go gs [x] xs
+    go gs ys (x : xs) = if equal x (last ys) then go gs (ys ++ [x]) xs else go (gs ++ [ys]) [] (x : xs)
 
 clusterBy :: (a -> a -> Ordering) -> (a -> a -> Bool) -> [a] -> [[a]]
 clusterBy compare equal = clusterConsecutive equal . sortBy compare

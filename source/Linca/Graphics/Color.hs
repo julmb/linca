@@ -11,17 +11,17 @@ data Color = RGB Rational Rational Rational | HSV Rational Rational Rational der
 
 rgb :: Rational -> Rational -> Rational -> Color
 rgb red green blue
-	| violates unitRange red   = error $ rangeErrorMessage "rgb" "red"   unitRange red
-	| violates unitRange green = error $ rangeErrorMessage "rgb" "green" unitRange green
-	| violates unitRange blue  = error $ rangeErrorMessage "rgb" "blue"  unitRange blue
-	| otherwise = RGB red green blue
+    | violates unitRange red   = error $ rangeErrorMessage "rgb" "red"   unitRange red
+    | violates unitRange green = error $ rangeErrorMessage "rgb" "green" unitRange green
+    | violates unitRange blue  = error $ rangeErrorMessage "rgb" "blue"  unitRange blue
+    | otherwise = RGB red green blue
 
 hsv :: Rational -> Rational -> Rational -> Color
 hsv hue saturation value
-	| violates hexaRange hue        = error $ rangeErrorMessage "hsv" "hue"        hexaRange hue
-	| violates unitRange saturation = error $ rangeErrorMessage "hsv" "saturation" unitRange saturation
-	| violates unitRange value      = error $ rangeErrorMessage "hsv" "value"      unitRange value
-	| otherwise = HSV hue saturation value
+    | violates hexaRange hue        = error $ rangeErrorMessage "hsv" "hue"        hexaRange hue
+    | violates unitRange saturation = error $ rangeErrorMessage "hsv" "saturation" unitRange saturation
+    | violates unitRange value      = error $ rangeErrorMessage "hsv" "value"      unitRange value
+    | otherwise = HSV hue saturation value
 
 red :: Color -> Rational
 red (RGB r _ _) = r
@@ -50,33 +50,33 @@ value (HSV _ _ v) = v
 toRGB :: Color -> Color
 toRGB (RGB red green blue) = RGB red green blue
 toRGB (HSV hue saturation value)
-	| hueIndex == 0 = RGB top rising bottom
-	| hueIndex == 1 = RGB falling top bottom
-	| hueIndex == 2 = RGB bottom top rising
-	| hueIndex == 3 = RGB bottom falling top
-	| hueIndex == 4 = RGB rising bottom top
-	| hueIndex == 5 = RGB top bottom falling
-	| otherwise = undefined
-	where
-		(hueIndex, hueFraction) = normalize 1 (0 :: Natural, hue)
-		result position = (1 - (1 - position) * saturation) * value
-		bottom  = result 0
-		top     = result 1
-		rising  = result hueFraction
-		falling = result (1 - hueFraction)
+    | hueIndex == 0 = RGB top rising bottom
+    | hueIndex == 1 = RGB falling top bottom
+    | hueIndex == 2 = RGB bottom top rising
+    | hueIndex == 3 = RGB bottom falling top
+    | hueIndex == 4 = RGB rising bottom top
+    | hueIndex == 5 = RGB top bottom falling
+    | otherwise = undefined
+    where
+        (hueIndex, hueFraction) = normalize 1 (0 :: Natural, hue)
+        result position = (1 - (1 - position) * saturation) * value
+        bottom  = result 0
+        top     = result 1
+        rising  = result hueFraction
+        falling = result (1 - hueFraction)
 
 toHSV :: Color -> Color
 toHSV (RGB red green blue)
-	| chroma == 0 = HSV 0 0 value
-	| otherwise   = HSV hue saturation value
-	where
-		chroma = value - minimum [red, green, blue]
-		hueRaw
-			| value == red   = (green - blue) / chroma + 0
-			| value == green = (blue - red)   / chroma + 2
-			| value == blue  = (red - green)  / chroma + 4
-			| otherwise = undefined
-		(_, hue) = normalize 6 (0 :: Integer, hueRaw)
-		saturation = chroma / value
-		value = maximum [red, green, blue]
+    | chroma == 0 = HSV 0 0 value
+    | otherwise   = HSV hue saturation value
+    where
+        chroma = value - minimum [red, green, blue]
+        hueRaw
+            | value == red   = (green - blue) / chroma + 0
+            | value == green = (blue - red)   / chroma + 2
+            | value == blue  = (red - green)  / chroma + 4
+            | otherwise = undefined
+        (_, hue) = normalize 6 (0 :: Integer, hueRaw)
+        saturation = chroma / value
+        value = maximum [red, green, blue]
 toHSV (HSV hue saturation value) = HSV hue saturation value

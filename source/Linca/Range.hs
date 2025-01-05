@@ -20,24 +20,24 @@ rangeNE upper = Range None (Exclusive upper)
 
 rangeII :: Ord value => value -> value -> Range value
 rangeII lower upper
-	| lower > upper = error $ errorMessage "rangeII" "parameter lower was larger than parameter upper"
-	| otherwise = Range (Inclusive lower) (Inclusive upper)
+    | lower > upper = error $ errorMessage "rangeII" "parameter lower was larger than parameter upper"
+    | otherwise = Range (Inclusive lower) (Inclusive upper)
 
 rangeIE :: Ord value => value -> value -> Range value
 rangeIE lower upper
-	| lower > upper = error $ errorMessage "rangeIE" "parameter lower was larger than parameter upper"
-	| otherwise = Range (Inclusive lower) (Exclusive upper)
+    | lower > upper = error $ errorMessage "rangeIE" "parameter lower was larger than parameter upper"
+    | otherwise = Range (Inclusive lower) (Exclusive upper)
 
 instance Show value => Show (Range value) where
-	show (Range None None) = "{..}"
-	show (Range (Inclusive lower) None) = printf "{%s ..}" (show lower)
-	show (Range None (Inclusive upper)) = printf "{.. %s}" (show upper)
-	show (Range (Exclusive lower) None) = printf "{%s <..}" (show lower)
-	show (Range None (Exclusive upper)) = printf "{..< %s}" (show upper)
-	show (Range (Inclusive lower) (Inclusive upper)) = printf "{%s .. %s}" (show lower) (show upper)
-	show (Range (Exclusive lower) (Inclusive upper)) = printf "{%s <.. %s}" (show lower) (show upper)
-	show (Range (Inclusive lower) (Exclusive upper)) = printf "{%s ..< %s}" (show lower) (show upper)
-	show (Range (Exclusive lower) (Exclusive upper)) = printf "{%s <..< %s}" (show lower) (show upper)
+    show (Range None None) = "{..}"
+    show (Range (Inclusive lower) None) = printf "{%s ..}" (show lower)
+    show (Range None (Inclusive upper)) = printf "{.. %s}" (show upper)
+    show (Range (Exclusive lower) None) = printf "{%s <..}" (show lower)
+    show (Range None (Exclusive upper)) = printf "{..< %s}" (show upper)
+    show (Range (Inclusive lower) (Inclusive upper)) = printf "{%s .. %s}" (show lower) (show upper)
+    show (Range (Exclusive lower) (Inclusive upper)) = printf "{%s <.. %s}" (show lower) (show upper)
+    show (Range (Inclusive lower) (Exclusive upper)) = printf "{%s ..< %s}" (show lower) (show upper)
+    show (Range (Exclusive lower) (Exclusive upper)) = printf "{%s <..< %s}" (show lower) (show upper)
 
 contains :: Ord value => Range value -> value -> Bool
 contains (Range None None) _ = True

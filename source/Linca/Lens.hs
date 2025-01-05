@@ -20,5 +20,5 @@ over lens f = runIdentity . lens (Identity . f)
 
 at :: Ord key => key -> Lens (Map key value) value
 at key = lens view set where
-	view map = map ! key
-	set value map = insert key value map
+    view map = map ! key
+    set value map = insert key value map
