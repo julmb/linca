@@ -8,7 +8,9 @@ import System.Directory
 import Linca.Error
 
 extension :: FilePath -> String
-extension = map toLower . tail . takeExtension
+extension path = case takeExtension path of
+    "" -> ""
+    _ : xs -> map toLower xs
 
 data FileType = File | Directory | None deriving Eq
 

@@ -26,7 +26,7 @@ replace offset chunk original
 
 rotateLeft :: [a] -> [a]
 rotateLeft [] = []
-rotateLeft list = tail list ++ [head list]
+rotateLeft (x : xs) = xs ++ [x]
 
 rotateRight :: [a] -> [a]
 rotateRight [] = []
