@@ -19,7 +19,7 @@ common configuration
 library
   import:              configuration
   build-depends:       base >= 4.9, containers >= 0.5, mtl >= 2.2, filepath >= 1.4, directory >= 1.2, bytestring >= 0.10, time >= 1.5, random >= 1.1
-  --hs-source-dirs:      source
+  hs-source-dirs:      source
   exposed-modules:
     Linca.Graphics.Color
     Linca.Graphics.AlphaColor
