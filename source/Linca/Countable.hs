@@ -1,4 +1,4 @@
-module Linca.Countable where
+module Linca.Countable (size, encode, decode, bool, byte, char, natural, integer, pair, option, list) where
 
 import Numeric.Natural
 import Data.Word

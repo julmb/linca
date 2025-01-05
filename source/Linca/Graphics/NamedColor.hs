@@ -1,6 +1,6 @@
-module Linca.Graphics.NamedColor where
+module Linca.Graphics.NamedColor (black, white, red, yellow, green, cyan, blue, magenta, clear) where
 
-import Linca.Graphics.Color
+import Linca.Graphics.Color hiding (red, green, blue)
 import Linca.Graphics.AlphaColor
 
 black :: Color
