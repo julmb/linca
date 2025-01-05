@@ -23,7 +23,9 @@ squareRoot 0 = 0
 squareRoot 1 = 1
 squareRoot n = fromJust $ find test $ iterate step initial where
     test k = square k <= n && n < square (k + 1)
-    [k, l] = suffix 2 $ takeWhile (n >=) (1 : iterate square 2)
+    (k, l) = case suffix 2 $ takeWhile (n >=) (1 : iterate square 2) of
+        [k, l] -> (k, l)
+        _ -> error $ errorMessage "squareRoot" "unexpected result"
     initial = squareRoot (n `div` l) * k
     step k = (k + n `div` k) `div` 2
 
