@@ -2,8 +2,8 @@ module Linca.ByteString.Lazy (extend, fold, replace) where
 
 import Numeric.Natural
 import Data.Word
-import qualified Data.ByteString as BS
-import qualified Data.ByteString.Lazy as BL
+import Data.ByteString qualified as BS
+import Data.ByteString.Lazy qualified as BL
 import Text.Printf
 import Linca.Error
 
